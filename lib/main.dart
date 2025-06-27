@@ -1,8 +1,9 @@
-import 'package:vinyl_collection_app/SchermataLista.dart';
+import 'package:vinyl_collection_app/screens/SchermataLista.dart';
 import 'package:flutter/material.dart';
-import 'BarraSotto.dart';
-import 'BarraSopra.dart';
-import 'SchermataPrincipale.dart';
+import 'package:vinyl_collection_app/db/database_helper.dart';
+import 'screens/BarraSotto.dart';
+import 'screens/BarraSopra.dart';
+import 'screens/SchermataPrincipale.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,17 @@ class VistaTabs extends StatefulWidget {
 class _VistaTabsState extends State<VistaTabs> {
   List<int> list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
+  @override
+  void initState() {
+    super.initState();
+    _inizializzaDatabase();
+  }
 
+  Future<void> _inizializzaDatabase() async {
+    // questo esegue effettivamente la creazione del database
+    final db = await DatabaseHelper.instance.database;
+    debugPrint('Database inizializzato: ${db.path}');
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,0 +1,111 @@
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import '../models/vinile.dart';
+import '../models/categoria.dart';
+
+class DatabaseHelper {
+  DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+
+  static Database? _database;
+
+  Future<Database> get database async =>
+      _database ??= await _initDatabase();
+
+  Future<Database> _initDatabase() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'vinyl_collection.db'),
+      version: 1,
+      onCreate: (db, version) async {
+        // Crea tabella categorie
+        await db.execute('''
+          CREATE TABLE categorie (
+            id TEXT PRIMARY KEY,
+            nome TEXT NOT NULL
+          )
+        ''');
+
+        // Crea tabella vinili
+        await db.execute('''
+          CREATE TABLE vinili (
+            id TEXT PRIMARY KEY,
+            titolo TEXT NOT NULL,
+            artista TEXT NOT NULL,
+            anno INTEGER NOT NULL,
+            etichetta TEXT NOT NULL,
+            genere TEXT NOT NULL,
+            condizione TEXT NOT NULL,
+            copertina TEXT,
+            preferito INTEGER NOT NULL
+          )
+        ''');
+      },
+    );
+  }
+
+  // ----------------------------
+  // METODI CRUD VINILI
+  // ----------------------------
+
+  Future<void> insertVinile(Vinile vinile) async {
+    final db = await database;
+    await db.insert(
+      'vinili',
+      vinile.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Vinile>> getVinili() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('vinili');
+    return List.generate(maps.length, (i) => Vinile.fromMap(maps[i]));
+  }
+
+  Future<void> updateVinile(Vinile vinile) async {
+    final db = await database;
+    await db.update(
+      'vinili',
+      vinile.toMap(),
+      where: 'id = ?',
+      whereArgs: [vinile.id],
+    );
+  }
+
+  Future<void> deleteVinile(String id) async {
+    final db = await database;
+    await db.delete(
+      'vinili',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // ----------------------------
+  // METODI CRUD CATEGORIE
+  // ----------------------------
+
+  Future<void> insertCategoria(Categoria categoria) async {
+    final db = await database;
+    await db.insert(
+      'categorie',
+      categoria.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Categoria>> getCategorie() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('categorie');
+    return List.generate(maps.length, (i) => Categoria.fromMap(maps[i]));
+  }
+
+  Future<void> deleteCategoria(String id) async {
+    final db = await database;
+    await db.delete(
+      'categorie',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+}
