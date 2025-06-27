@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'BarraSotto.dart';
-import 'main.dart';
+import '../main.dart';
 
 void main() {
   runApp(const MyApp());
