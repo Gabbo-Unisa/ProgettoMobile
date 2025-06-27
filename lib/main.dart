@@ -1,4 +1,4 @@
-import 'package:first_example/SchermataLista.dart';
+import 'package:vinyl_collection_app/SchermataLista.dart';
 import 'package:flutter/material.dart';
 import 'BarraSotto.dart';
 import 'BarraSopra.dart';

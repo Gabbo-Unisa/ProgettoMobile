@@ -1,5 +1,5 @@
-name: first_example
-description: "A new Flutter project."
+name: vinyl_collection_app
+description: "A Flutter app to manage vinyl record collection."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,6 +34,26 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+
+  # SQLite e accesso file
+  sqflite: ^2.3.2
+  path_provider: ^2.1.3
+
+  # Immagini
+  image_picker: ^1.1.1
+  path: ^1.9.0
+
+  # Grafici (analisi)
+  fl_chart: ^0.66.2
+
+  # Gestione stato
+  provider: ^6.1.2
+
+  # ID univoci
+  uuid: ^4.3.3
+
+  # Formattazione date
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
