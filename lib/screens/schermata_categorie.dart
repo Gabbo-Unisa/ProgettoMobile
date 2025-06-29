@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'BarraSopra.dart';
-import 'SchermataLista.dart';
+import 'schermata_categorie.dart';
 
 void main() {
   runApp(const SchermataLista());
