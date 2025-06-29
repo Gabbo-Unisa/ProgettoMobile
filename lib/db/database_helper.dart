@@ -17,7 +17,7 @@ class DatabaseHelper {
       join(await getDatabasesPath(), 'vinyl_collection.db'),
       version: 1,
       onCreate: (db, version) async {
-        // Crea tabella categorie
+        // Creazione tabella categorie
         await db.execute('''
           CREATE TABLE categorie (
             id TEXT PRIMARY KEY,
@@ -25,15 +25,15 @@ class DatabaseHelper {
           )
         ''');
 
-        // Crea tabella vinili
+        // Creazione tabella vinili
         await db.execute('''
           CREATE TABLE vinili (
             id TEXT PRIMARY KEY,
             titolo TEXT NOT NULL,
             artista TEXT NOT NULL,
             anno INTEGER NOT NULL,
-            etichetta TEXT NOT NULL,
             genere TEXT NOT NULL,
+            etichetta TEXT NOT NULL,
             condizione TEXT NOT NULL,
             copertina TEXT,
             preferito INTEGER NOT NULL
