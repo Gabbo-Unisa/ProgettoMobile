@@ -1,88 +1,49 @@
 import 'package:flutter/material.dart';
-import 'BarraSopra.dart';
-import 'schermata_categorie.dart';
 
-void main() {
-  runApp(const SchermataLista());
+class SchermataCategorie extends StatefulWidget {
+  const SchermataCategorie({super.key});
+
+  @override
+  State<SchermataCategorie> createState() => _SchermataCategorieState();
 }
 
-class SchermataLista extends StatelessWidget {
-  const SchermataLista({super.key});
+class _SchermataCategorieState extends State<SchermataCategorie> {
+
+  final int _numeroTabs = 3;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SchermataLista',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrangeAccent),
+    return DefaultTabController(
+      length: _numeroTabs,
+      child: Scaffold(
+        backgroundColor: const Color(0xFF000B23),
+        appBar: AppBar(
+          flexibleSpace: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: const [
+              TabBar(
+                  indicatorColor: Colors.lightBlue,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.white54,
+                  tabs: const <Tab>[
+                    Tab(text: 'Tutti'),
+                    Tab(text: 'Preferiti'),
+                    Tab(text: 'Statistiche'),
+                  ]
+              ),
+            ],
+          ),
+          backgroundColor: const Color(0xFF000B23),
+        ),
+
+        body: TabBarView(
+          children: <Widget>[
+            const Center(child: Text('Tutti', style: TextStyle(color: Colors.white))),
+            const Center(child: Text('Preferiti', style: TextStyle(color: Colors.white))),
+            const Center(child: Text('Statistiche', style: TextStyle(color: Colors.white))),
+          ]
+        ),
       ),
-      home: const MyPage(title: 'SchermataLista'),
     );
   }
-}
-
-class MyPage extends StatefulWidget {
-  const MyPage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyPage> createState() => _MyPageState();
-}
-
-class _MyPageState extends State<MyPage> {
-  List<int> list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-
-
-      body: ListView(
-        /*padding: EdgeInsets.all(8),*/
-
-        children: [
-          for(var i in list)
-            Container(
-              height: 100,
-              width: double.infinity,
-              margin: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.lightBlue,
-
-              ),
-              /*color: Colors.lightBlue,*/
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('$i'),
-                    Checkbox(
-                        value: false,
-                        onChanged: null
-                        /*Al posto del null ci andrà il metodo che
-                        * inserirà quella serie tra i preferiti*/
-                    )
-                  ],
-                ),
-              ),
-
-            ),
-
-        ],
-
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        /*Metodo per aggiungere una serie alla lista delle serie*/
-        tooltip: '',
-        child: const Icon(Icons.add),
-      ),
-
-    );
-  }
-
 }
