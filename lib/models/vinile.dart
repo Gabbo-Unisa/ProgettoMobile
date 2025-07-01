@@ -1,5 +1,5 @@
 class Vinile {
-  final String id;
+  final int? id;
   final String titolo;
   final String artista;
   final int anno;
@@ -10,7 +10,7 @@ class Vinile {
   final bool preferito;
 
   const Vinile({
-    required this.id,
+    this.id,
     required this.titolo,
     required this.artista,
     required this.anno,
@@ -23,9 +23,8 @@ class Vinile {
 
   // Converte un Vinile in una Map; le chiavi sono le colonne
   // della tabella 'vinili' nel database
-  Map<String,dynamic> toMap() {
-    return {
-      'id': id,
+  Map<String, dynamic> toMap() {
+    final map = {
       'titolo': titolo,
       'artista': artista,
       'anno': anno,
@@ -35,7 +34,14 @@ class Vinile {
       'copertina': copertina,
       'preferito': preferito ? 1 : 0,
     };
+
+    if (id != null) {
+      map['id'] = id;
+    }
+
+    return map;
   }
+
 
   // Serve per ricreare un oggetto Vinile a partire da una riga del database
   // (che viene restituita come una Map<String, dynamic> da SQLite)

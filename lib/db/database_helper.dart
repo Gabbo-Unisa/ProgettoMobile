@@ -20,7 +20,7 @@ class DatabaseHelper {
         // Creazione tabella categorie
         await db.execute('''
           CREATE TABLE categorie (
-            id TEXT PRIMARY KEY,
+            id INTEGER PRIMARY KEY,
             nome TEXT NOT NULL
           )
         ''');
@@ -28,7 +28,7 @@ class DatabaseHelper {
         // Creazione tabella vinili
         await db.execute('''
           CREATE TABLE vinili (
-            id TEXT PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             titolo TEXT NOT NULL,
             artista TEXT NOT NULL,
             anno INTEGER NOT NULL,
