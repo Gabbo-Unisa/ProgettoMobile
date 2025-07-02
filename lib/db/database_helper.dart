@@ -72,7 +72,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> deleteVinile(String id) async {
+  Future<void> deleteVinile(int id) async {
     final db = await database;
     await db.delete(
       'vinili',
@@ -100,7 +100,7 @@ class DatabaseHelper {
     return List.generate(maps.length, (i) => Categoria.fromMap(maps[i]));
   }
 
-  Future<void> deleteCategoria(String id) async {
+  Future<void> deleteCategoria(int id) async {
     final db = await database;
     await db.delete(
       'categorie',
