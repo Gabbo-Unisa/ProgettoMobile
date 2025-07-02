@@ -32,6 +32,42 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'VinylVault',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: const Color(0xFF001237),
+        scaffoldBackgroundColor: const Color(0xFF000B23),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.white60),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.lightBlueAccent),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white30),
+          ),
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Colors.lightBlueAccent,
+          selectionHandleColor: Colors.lightBlueAccent,
+        ),
+        switchTheme: SwitchThemeData(
+          thumbColor: MaterialStateProperty.resolveWith<Color>(
+            (states) {
+              if (states.contains(MaterialState.selected)) {
+                  return Colors.lightBlueAccent;
+              }
+              return Colors.white24;
+            },
+          ),
+          trackColor: MaterialStateProperty.resolveWith<Color>(
+                (states) {
+              if (states.contains(MaterialState.selected)) {
+                return Colors.lightBlue.withOpacity(0.5);
+              }
+              return Colors.white10;
+            },
+          ),
+        ),
+      ),
       home: const VistaTabs(title: 'VinylVault'),
     );
   }
