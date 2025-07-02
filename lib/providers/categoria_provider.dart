@@ -17,7 +17,7 @@ class CategoriaProvider with ChangeNotifier {
     await caricaCategorie();
   }
 
-  Future<void> eliminaCategoria(String id) async {
+  Future<void> eliminaCategoria(int id) async {
     await DatabaseHelper.instance.deleteCategoria(id);
     await caricaCategorie();
   }

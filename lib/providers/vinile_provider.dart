@@ -17,13 +17,13 @@ class VinileProvider with ChangeNotifier {
     await caricaVinili();
   }
 
-  Future<void> eliminaVinile(String id) async {
+  Future<void> eliminaVinile(int id) async {
     await DatabaseHelper.instance.deleteVinile(id);
     await caricaVinili();
   }
 
-  Future<void> aggiornaVinile(Vinile vinile) async {
-    await DatabaseHelper.instance.updateVinile(vinile);
+  Future<void> aggiornaVinile(Vinile v) async {
+    await DatabaseHelper.instance.updateVinile(v);
     await caricaVinili();
   }
 }
