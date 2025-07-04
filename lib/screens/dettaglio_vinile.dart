@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import '../models/vinile.dart';
+import '../models/categoria.dart';
+
 import 'form_vinile.dart';
 import 'package:provider/provider.dart';
 import '../providers/vinile_provider.dart';
+import '../providers/categoria_provider.dart';
 
 class DettaglioVinile extends StatelessWidget {
   final Vinile vinile;
@@ -12,19 +15,22 @@ class DettaglioVinile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final categoriaProvider = Provider.of<CategoriaProvider>(context);
+    final categoria = categoriaProvider.categorie.firstWhere(
+          (c) => c.id == vinile.categoriaId,
+      orElse: () => Categoria(id: null, nome: 'Sconosciuta'),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(vinile.titolo, style: const TextStyle(color: Colors.white)),
-        backgroundColor: const Color(0xFF000B23),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(vinile.titolo),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SchermataForm(vinile: vinile, isEditing: true),
+              await Navigator.push(context, MaterialPageRoute(
+                  builder: (_) => SchermataAggiuntaVinile(vinile: vinile, isEditing: true),
                 ),
               );
               // Ricarica i vinili al ritorno
@@ -54,7 +60,6 @@ class DettaglioVinile extends StatelessWidget {
           ),
         ],
       ),
-      backgroundColor: const Color(0xFF000B23),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(
@@ -110,24 +115,24 @@ class DettaglioVinile extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('Artista:', style: TextStyle(color: Colors.white60, fontSize: 16)),
-              Text(vinile.artista, style: const TextStyle(color: Colors.white, fontSize: 18)),
+              Text('Artista:', style: Theme.of(context).textTheme.labelMedium),
+              Text(vinile.artista, style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 12),
 
-              const Text('Anno:', style: TextStyle(color: Colors.white60, fontSize: 16)),
-              Text('${vinile.anno}', style: const TextStyle(color: Colors.white, fontSize: 18)),
+              Text('Anno:', style: Theme.of(context).textTheme.labelMedium),
+              Text('${vinile.anno}', style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 12),
 
-              const Text('Genere:', style: TextStyle(color: Colors.white60, fontSize: 16)),
-              Text(vinile.genere, style: const TextStyle(color: Colors.white, fontSize: 18)),
+              Text('Categoria:', style:  Theme.of(context).textTheme.labelMedium),
+              Text(categoria.nome, style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 12),
 
-              const Text('Etichetta:', style: TextStyle(color: Colors.white60, fontSize: 16)),
-              Text(vinile.etichetta, style: const TextStyle(color: Colors.white, fontSize: 18)),
+              Text('Etichetta:', style: Theme.of(context).textTheme.labelMedium),
+              Text(vinile.etichetta, style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 12),
 
-              const Text('Condizione:', style: TextStyle(color: Colors.white60, fontSize: 16)),
-              Text(vinile.condizione, style: const TextStyle(color: Colors.white, fontSize: 18)),
+              Text('Condizione:', style: Theme.of(context).textTheme.labelMedium),
+              Text(vinile.condizione, style: Theme.of(context).textTheme.bodyLarge),
               const SizedBox(height: 12),
             ],
           ),
