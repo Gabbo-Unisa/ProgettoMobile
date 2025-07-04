@@ -9,8 +9,14 @@ import 'providers/statistiche_provider.dart';
 import 'screens/schermata_principale.dart';
 import 'screens/schermata_categorie.dart';
 import 'screens/schermata_profilo.dart';
+import 'theme/app_theme.dart';
 
-void main() {
+import 'screens/form_vinile.dart';
+//import 'package:sqflite/sqflite.dart';
+
+void main() async {
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await resetDatabase();
   runApp(
     MultiProvider(
       providers: [
@@ -24,6 +30,14 @@ void main() {
   );
 }
 
+/*
+Future<void> resetDatabase() async {
+  final dbPath = await getDatabasesPath();
+  final path = '$dbPath/vinyl_collection.db';
+  await deleteDatabase(path);
+}
+*/
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -32,42 +46,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'VinylVault',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: const Color(0xFF001237),
-        scaffoldBackgroundColor: const Color(0xFF000B23),
-        inputDecorationTheme: const InputDecorationTheme(
-          labelStyle: TextStyle(color: Colors.white60),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.lightBlueAccent),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white30),
-          ),
-        ),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Colors.lightBlueAccent,
-          selectionHandleColor: Colors.lightBlueAccent,
-        ),
-        switchTheme: SwitchThemeData(
-          thumbColor: MaterialStateProperty.resolveWith<Color>(
-            (states) {
-              if (states.contains(MaterialState.selected)) {
-                  return Colors.lightBlueAccent;
-              }
-              return Colors.white24;
-            },
-          ),
-          trackColor: MaterialStateProperty.resolveWith<Color>(
-                (states) {
-              if (states.contains(MaterialState.selected)) {
-                return Colors.lightBlue.withOpacity(0.5);
-              }
-              return Colors.white10;
-            },
-          ),
-        ),
-      ),
+      theme: AppTheme.darkTheme,
       home: const VistaTabs(title: 'VinylVault'),
     );
   }
@@ -105,7 +84,7 @@ class _VistaTabsState extends State<VistaTabs> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(
+      appBar: _selectedIndex == 2 ? null : AppBar(
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -115,21 +94,14 @@ class _VistaTabsState extends State<VistaTabs> {
               width: 50,
             ),
             Text(widget.title),
-            const SizedBox(width: 10),
           ],
         ),
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        backgroundColor: const Color(0xFF000B23),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.search_rounded, color: Colors.white, size: 25),
+            icon: const Icon(Icons.search_rounded),
             tooltip: 'Ricerca',
             onPressed: () {
-
+                //implementare ricerca
             },
           ),
         ],
@@ -144,10 +116,18 @@ class _VistaTabsState extends State<VistaTabs> {
         items: _navItems,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        backgroundColor: const Color(0xFF000B23),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white54,
-        type: BottomNavigationBarType.fixed,
+      ),
+
+      floatingActionButton: _selectedIndex == 2 ? null : FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataAggiuntaVinile()));
+        },
+        backgroundColor: Color(0xFF001237),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: const Icon(Icons.add),
       ),
     );
   }
