@@ -9,18 +9,22 @@ class DatabaseHelper {
 
   static Database? _database;
 
-  Future<Database> get database async =>
-      _database ??= await _initDatabase();
+  Future<Database> get database async => _database ??= await _initDatabase();
+
+  Future<void> _onConfigure(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
+  }
 
   Future<Database> _initDatabase() async {
     return openDatabase(
       join(await getDatabasesPath(), 'vinyl_collection.db'),
       version: 1,
+      onConfigure: _onConfigure,
       onCreate: (db, version) async {
         // Creazione tabella categorie
         await db.execute('''
           CREATE TABLE categorie (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL
           )
         ''');
@@ -32,11 +36,12 @@ class DatabaseHelper {
             titolo TEXT NOT NULL,
             artista TEXT NOT NULL,
             anno INTEGER NOT NULL,
-            genere TEXT NOT NULL,
             etichetta TEXT NOT NULL,
             condizione TEXT NOT NULL,
             copertina TEXT,
-            preferito INTEGER NOT NULL
+            preferito INTEGER NOT NULL,
+            categoriaId INTEGER,
+            FOREIGN KEY (categoriaId) REFERENCES categorie(id) ON DELETE SET NULL
           )
         ''');
       },

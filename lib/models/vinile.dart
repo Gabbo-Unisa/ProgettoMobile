@@ -3,22 +3,23 @@ class Vinile {
   final String titolo;
   final String artista;
   final int anno;
-  final String genere;
   final String etichetta;
   final String condizione;
-  final String? copertina; // path immagine (può essere null)
+  final String? copertina;
   final bool preferito;
+  final int? categoriaId;
+
 
   const Vinile({
     this.id,
     required this.titolo,
     required this.artista,
     required this.anno,
-    required this.genere,
     required this.etichetta,
     required this.condizione,
     this.copertina,
     this.preferito = false,
+    this.categoriaId,
   });
 
   // Converte un Vinile in una Map; le chiavi sono le colonne
@@ -28,16 +29,12 @@ class Vinile {
       'titolo': titolo,
       'artista': artista,
       'anno': anno,
-      'genere': genere,
       'etichetta': etichetta,
       'condizione': condizione,
       'copertina': copertina,
       'preferito': preferito ? 1 : 0,
+      'categoriaId': categoriaId,
     };
-
-    if (id != null) {
-      map['id'] = id;
-    }
 
     return map;
   }
@@ -51,18 +48,18 @@ class Vinile {
       titolo: map['titolo'],
       artista: map['artista'],
       anno: map['anno'],
-      genere: map['genere'],
       etichetta: map['etichetta'],
       condizione: map['condizione'],
       copertina: map['copertina'],
       preferito: map['preferito'] == 1,
+      categoriaId: map['categoriaId'],
     );
   }
 
   @override
   String toString() {
     return 'Vinile(id: $id, titolo: $titolo, artista: $artista, anno: $anno, '
-           'genere: $genere, etichetta: $etichetta, condizione: $condizione, '
-           'copertina: $copertina, preferito: $preferito)';
+           'etichetta: $etichetta, condizione: $condizione, copertina: $copertina, '
+           'preferito: $preferito, categoriaId: $categoriaId)';
   }
 }

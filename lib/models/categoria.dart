@@ -1,18 +1,20 @@
 class Categoria {
-  final String id;
+  final int? id;
   final String nome;
 
   const Categoria({
-    required this.id,
+    this.id,
     required this.nome,
   });
 
-  Map<String,dynamic> toMap() {
-    return {
-      'id': id,
+  Map<String, dynamic> toMap() {
+    final map = {
       'nome': nome,
     };
+
+    return map;
   }
+
 
   factory Categoria.fromMap(Map<String,dynamic> map) {
     return Categoria(
