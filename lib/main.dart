@@ -7,9 +7,9 @@ import 'providers/categoria_provider.dart';
 import 'providers/ricerca_provider.dart';
 import 'providers/statistiche_provider.dart';
 
-import 'screens/schermata_principale.dart';
-import 'screens/schermata_categorie.dart';
-import 'screens/schermata_statistiche.dart';
+import 'screens/home.dart';
+import 'screens/libreria.dart';
+import 'screens/statistiche.dart';
 import 'theme/app_theme.dart';
 
 import 'screens/form_vinile.dart';
@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
       title: 'VinylVault',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: SafeArea(
-          child: const VistaTabs(title: 'VinylVault')
-      ),
+      home: SafeArea(child: const VistaTabs(title: 'VinylVault')),
     );
   }
 }
@@ -69,7 +67,7 @@ class _VistaTabsState extends State<VistaTabs> {
 
   static const List<Widget> _screens = [
     SchermataPrincipale(),
-    SchermataCategorie(),
+    SchermataLibreria(),
     SchermataStatistiche(),
   ];
 
@@ -80,40 +78,42 @@ class _VistaTabsState extends State<VistaTabs> {
   static final List<BottomNavigationBarItem> _navItems = [
     BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
     BottomNavigationBarItem(icon: Icon(MdiIcons.bookshelf), label: 'Libreria'),
-    BottomNavigationBarItem(icon: Icon(MdiIcons.chartArc), label: 'Statistiche'),
+    BottomNavigationBarItem(
+      icon: Icon(MdiIcons.chartArc),
+      label: 'Statistiche',
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:
+          _selectedIndex == 2
+              ? null
+              : AppBar(
+                title: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Image.asset(
+                      'assets/images/VinylVault.png',
+                      height: 50,
+                      width: 50,
+                    ),
+                    Text(widget.title),
+                  ],
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.search_rounded),
+                    tooltip: 'Ricerca',
+                    onPressed: () {
+                      //implementare ricerca
+                    },
+                  ),
+                ],
+              ),
 
-      appBar: _selectedIndex == 2 ? null : AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Image.asset(
-              'assets/images/VinylVault.png',
-              height: 50,
-              width: 50,
-            ),
-            Text(widget.title),
-          ],
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.search_rounded),
-            tooltip: 'Ricerca',
-            onPressed: () {
-                //implementare ricerca
-            },
-          ),
-        ],
-      ),
-
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _screens),
 
       bottomNavigationBar: BottomNavigationBar(
         items: _navItems,
@@ -121,17 +121,25 @@ class _VistaTabsState extends State<VistaTabs> {
         onTap: _onItemTapped,
       ),
 
-      floatingActionButton: _selectedIndex == 2 ? null : FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataAggiuntaVinile()));
-        },
-        backgroundColor: Color(0xFF001237),
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton:
+          _selectedIndex == 2
+              ? null
+              : FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SchermataAggiuntaVinile(),
+                    ),
+                  );
+                },
+                backgroundColor: Color(0xFF001237),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: const Icon(Icons.add),
+              ),
     );
   }
 }

@@ -195,7 +195,6 @@ class SchermataPrincipale extends StatelessWidget {
                                   fit: BoxFit.contain,
                                   child: const Icon(
                                     Icons.album,
-                                    size: 180,
                                     color: Colors.grey,
                                   ),
                                 ),
