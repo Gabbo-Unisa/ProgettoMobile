@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,7 +8,6 @@ import '../providers/vinile_provider.dart';
 
 import '../models/vinile.dart';
 import 'dettaglio_vinile.dart';
-
 
 class ListaViniliPerCategoria extends StatefulWidget {
   final String categoria;
@@ -19,16 +20,17 @@ class ListaViniliPerCategoria extends StatefulWidget {
   });
 
   @override
-  State<ListaViniliPerCategoria> createState() => _ListaViniliPerCategoriaState();
+  State<ListaViniliPerCategoria> createState() =>
+      _ListaViniliPerCategoriaState();
 }
 
 class _ListaViniliPerCategoriaState extends State<ListaViniliPerCategoria> {
-  late List<Vinile> viniliPerCategoria;
+  late List<Vinile> vinili;
 
   @override
   void initState() {
     super.initState();
-    viniliPerCategoria = widget.vinili;
+    vinili = widget.vinili;
   }
 
   Future<void> _aggiornaVinili() async {
@@ -36,9 +38,10 @@ class _ListaViniliPerCategoriaState extends State<ListaViniliPerCategoria> {
     await vinileProvider.caricaVinili();
 
     setState(() {
-      viniliPerCategoria = vinileProvider.vinili
-          .where((v) => v.categoriaId == widget.vinili.first.categoriaId)
-          .toList();
+      vinili =
+          vinileProvider.vinili
+              .where((v) => v.categoriaId == widget.vinili.first.categoriaId)
+              .toList();
     });
   }
 
@@ -51,54 +54,92 @@ class _ListaViniliPerCategoriaState extends State<ListaViniliPerCategoria> {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () async {
-              final categoriaProvider = Provider.of<CategoriaProvider>(context, listen: false);
+              final categoriaProvider = Provider.of<CategoriaProvider>(
+                context,
+                listen: false,
+              );
 
               final cat = categoriaProvider.categorie.firstWhere(
-                    (c) => c.nome.trim().toLowerCase() == widget.categoria.trim().toLowerCase(),
+                (c) =>
+                    c.nome.trim().toLowerCase() ==
+                    widget.categoria.trim().toLowerCase(),
                 orElse: () => throw Exception('Categoria non trovata'),
               );
 
               final conferma = await showDialog<bool>(
                 context: context,
-                builder: (_) => AlertDialog(
-                  title: const Text('Conferma eliminazione'),
-                  content: const Text('Vuoi eliminare questa categoria?'),
-                  actions: [
-                    TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Annulla')),
-                    TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Elimina')),
-                  ],
-                ),
+                builder:
+                    (_) => AlertDialog(
+                      title: const Text('Conferma eliminazione'),
+                      content: const Text('Vuoi eliminare questa categoria?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Annulla'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text('Elimina'),
+                        ),
+                      ],
+                    ),
               );
 
               if (conferma == true) {
                 await categoriaProvider.eliminaCategoria(cat.id!);
                 await categoriaProvider.caricaCategorie();
-                await Provider.of<VinileProvider>(context, listen: false).caricaVinili();
+                await Provider.of<VinileProvider>(
+                  context,
+                  listen: false,
+                ).caricaVinili();
                 Navigator.pop(context);
               }
             },
           ),
         ],
       ),
-      body: ListView.separated(
-        itemCount: viniliPerCategoria.length,
+      body: ListView.builder(
+        itemCount: vinili.length,
         itemBuilder: (context, index) {
-          final v = viniliPerCategoria[index];
+          final vinile = vinili[index];
           return ListTile(
-            title: Text(v.titolo, style: Theme.of(context).textTheme.bodyLarge),
-            subtitle: Text(v.artista, style: Theme.of(context).textTheme.labelSmall),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                8,
+              ), // stesso raggio per entrambi
+              child:
+                  vinile.copertina != null
+                      ? SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: Image.file(
+                          File(vinile.copertina!),
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                      : Container(
+                        width: 60,
+                        height: 60,
+                        color: Colors.grey[300],
+                        child: const Icon(
+                          Icons.album,
+                          size: 32,
+                          color: Colors.grey,
+                        ),
+                      ),
+            ),
+            title: Text(vinile.titolo),
+            subtitle: Text(vinile.artista),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => DettaglioVinile(vinile: v))
-                            ).then((_) => _aggiornaVinili());
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DettaglioVinile(vinile: vinile),
+                ),
+              ).then((_) => _aggiornaVinili());
             },
           );
         },
-        separatorBuilder: (_, __) => const Divider(
-          color: Colors.white24,
-          indent: 16,
-          endIndent: 16,
-          height: 1,
-        ),
       ),
     );
   }

@@ -7,6 +7,7 @@ import '../providers/categoria_provider.dart';
 import '../models/categoria.dart';
 import 'dettaglio_vinile.dart';
 import 'form_categoria.dart';
+import 'lista_vinili_per_categoria.dart';
 import 'vinili_list_view.dart';
 
 class SchermataLibreria extends StatefulWidget {
@@ -95,16 +96,12 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
                 context,
                 MaterialPageRoute(
                   builder:
-                      (context) => Scaffold(
-                        appBar: AppBar(title: Text("Senza categoria")),
-                        body: ViniliListView(
-                          vinili:
-                              provider.vinili
-                                  .where((v) => v.categoriaId == null)
-                                  .toList(),
-                          categoria: "Senza categoria",
-                          messaggio: 'Nessun vinile senza categoria',
-                        ),
+                      (context) => ListaViniliPerCategoria(
+                        categoria: 'Senza categoria',
+                        vinili:
+                            provider.vinili
+                                .where((v) => v.categoriaId == null)
+                                .toList(),
                       ),
                 ),
               );
@@ -154,16 +151,12 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
               context,
               MaterialPageRoute(
                 builder:
-                    (context) => Scaffold(
-                      appBar: AppBar(title: Text(cat.nome)),
-                      body: ViniliListView(
-                        vinili:
-                            provider.vinili
-                                .where((v) => v.categoriaId == cat.id)
-                                .toList(),
-                        categoria: cat.nome,
-                        messaggio: 'Nessun vinile in ${cat.nome}',
-                      ),
+                    (context) => ListaViniliPerCategoria(
+                      categoria: cat.nome,
+                      vinili:
+                          provider.vinili
+                              .where((v) => v.categoriaId == cat.id)
+                              .toList(),
                     ),
               ),
             );

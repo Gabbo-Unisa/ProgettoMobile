@@ -1,23 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/categoria_provider.dart';
-import '../providers/vinile_provider.dart';
 
 import '../models/vinile.dart';
 import 'dettaglio_vinile.dart';
 
 class ViniliListView extends StatelessWidget {
   final List<Vinile> vinili;
-  final String? categoria;
   final String messaggio;
 
   const ViniliListView({
     super.key,
     required this.vinili,
     required this.messaggio,
-    this.categoria,
   });
 
   @override
