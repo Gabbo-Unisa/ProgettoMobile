@@ -129,6 +129,15 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.isEditing ? 'Modifica Vinile' : 'Aggiungi Vinile'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              preferito ? Icons.favorite : Icons.favorite_border,
+              color: preferito ? Colors.red : Colors.white,
+            ),
+            onPressed: () => setState(() => preferito = !preferito),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -137,6 +146,50 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Copertina
+              GestureDetector(
+                onTap: _scegliImmagine,
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[800],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child:
+                      copertina != null
+                          ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.file(
+                              copertina!,
+                              fit: BoxFit.contain,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                            ),
+                          )
+                          : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.image,
+                                size: 48,
+                                color: Colors.white54,
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Nessuna copertina\nTocca per selezionare',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
               // Titolo
               TextFormField(
                 initialValue: titolo,
@@ -238,53 +291,17 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                 ),
               ),
 
-              const SizedBox(height: 16),
-
-              // Preferito
-              SwitchListTile(
-                title: Text(
-                  'Preferito',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                value: preferito,
-                onChanged: (val) => setState(() => preferito = val),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Immagine copertina
-              ElevatedButton(
-                onPressed: _scegliImmagine,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
-                ),
-                child: const Text(
-                  'Seleziona immagine copertina',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              if (copertina != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Image.file(copertina!, height: 150),
-                ),
-
-              const SizedBox(height: 24),
-
-              ElevatedButton(
-                onPressed: _salvaVinile,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
-                ),
-                child: const Text(
-                  'Salva vinile',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              const SizedBox(height: 100),
             ],
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _salvaVinile,
+        icon: const Icon(Icons.save),
+        label: const Text('Salva vinile'),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
