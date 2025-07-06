@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import '../db/database_helper.dart';
+
+import 'form_categoria.dart';
 
 import '../providers/vinile_provider.dart';
 import '../providers/categoria_provider.dart';
+import '../db/database_helper.dart';
 
-import 'dart:io';
+import '../models/categoria.dart';
 import '../models/vinile.dart';
 
 class SchermataAggiuntaVinile extends StatefulWidget {
@@ -26,7 +30,7 @@ class SchermataAggiuntaVinile extends StatefulWidget {
 class _SchermataFormState extends State<SchermataAggiuntaVinile> {
   final _formKey = GlobalKey<FormState>();
 
-  String? titolo, artista, etichetta, condizione, genere;
+  String? titolo, artista, etichetta, condizione;
   int? anno;
   File? copertina;
   bool preferito = false;
@@ -249,14 +253,35 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                 alignedDropdown: true,
                 child: DropdownButtonFormField<int>(
                   value: categoriaId,
-                  items:
-                      categorie.map((c) {
-                        return DropdownMenuItem<int>(
-                          value: c.id,
-                          child: Text(c.nome),
-                        );
-                      }).toList(),
-                  onChanged: (val) => setState(() => categoriaId = val),
+                  items: [
+                    ...categorie.map(
+                      (c) => DropdownMenuItem<int>(
+                        value: c.id,
+                        child: Text(c.nome),
+                      ),
+                    ),
+                    DropdownMenuItem<int>(
+                      value: -1,
+                      child: Text(
+                        '+ Aggiungi nuova categoria',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  ],
+                  onChanged: (val) {
+                    if (val == -1) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => const SchermataAggiuntaCategoria(),
+                        ),
+                      );
+                      setState(() => categoriaId = null);
+                    } else {
+                      setState(() => categoriaId = null);
+                    }
+                  },
                   onSaved: (val) => categoriaId = val,
                   decoration: const InputDecoration(labelText: 'Categoria'),
                   dropdownColor: const Color(0xFF001237),
