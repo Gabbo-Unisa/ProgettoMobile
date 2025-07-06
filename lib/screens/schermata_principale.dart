@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vinyl_collection_app/screens/form_vinile.dart';
 
 import '../models/vinile.dart';
 import '../providers/vinile_provider.dart';
@@ -12,6 +13,7 @@ class SchermataPrincipale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vinileProvider = Provider.of<VinileProvider>(context, listen: true);
+    final vinili = vinileProvider.vinili;
     final viniliRecenti = vinileProvider.getViniliRecenti();
     final viniliCasuali = vinileProvider.getViniliCasuali();
 
@@ -49,48 +51,98 @@ class SchermataPrincipale extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 12.0,
+      body:
+          vinili.isEmpty
+              ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Ancora nessun vinile nella tua collezione',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlue,
+                        ),
+                        onPressed: () {
+                          // Vai alla schermata per aggiungere un nuovo vinile
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => const SchermataAggiuntaVinile(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Aggiungi un nuovo vinile',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            '⭐ Suggeriti per te',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          buildCarosello(
+                            context: context,
+                            vinili: viniliCasuali,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 12.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            '🎵 Ultimi aggiunti',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          buildCarosello(
+                            context: context,
+                            vinili: viniliRecenti,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '⭐ Suggeriti per te',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  buildCarosello(context: context, vinili: viniliCasuali),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 12.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '🎵 Ultimi aggiunti',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  buildCarosello(context: context, vinili: viniliRecenti),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -101,7 +153,7 @@ class SchermataPrincipale extends StatelessWidget {
     if (vinili.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Text('Nessun vinile.'),
+        child: Text('Ancora nessun vinile'),
       );
     }
 
