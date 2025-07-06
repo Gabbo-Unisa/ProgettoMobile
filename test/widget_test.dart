@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:vinyl_collection_app/main.dart';
 
 import 'package:vinyl_collection_app/screens/schermata_principale.dart';
 
