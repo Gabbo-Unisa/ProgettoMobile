@@ -18,79 +18,81 @@ class SchermataPrincipale extends StatelessWidget {
     final viniliCasuali = vinileProvider.getViniliCasuali();
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(150),
-        child: AppBar(
-          flexibleSpace: Padding(
-            padding: const EdgeInsets.only(top: 35.0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Benvenuto in VinylVault!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    'La tua collezione sempre con te',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 35.0,
               ),
-            ),
-          ),
-        ),
-      ),
-      body:
-          vinili.isEmpty
-              ? Center(
+              child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Ancora nessun vinile nella tua collezione',
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Benvenuto in VinylVault!',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.lightBlue,
-                        ),
-                        onPressed: () {
-                          // Vai alla schermata per aggiungere un nuovo vinile
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const SchermataAggiuntaVinile(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          'Aggiungi un nuovo vinile',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                    Text(
+                      'La tua collezione sempre con te',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
                       ),
                     ),
                   ],
                 ),
-              )
-              : SingleChildScrollView(
-                child: Column(
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            vinili.isEmpty
+                ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Ancora nessun vinile nella tua collezione',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightBlue,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        const SchermataAggiuntaVinile(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'Aggiungi un nuovo vinile',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
@@ -142,7 +144,9 @@ class SchermataPrincipale extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+          ],
+        ),
+      ),
     );
   }
 

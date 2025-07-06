@@ -45,8 +45,7 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
       length: _numeroTabs, // 3
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('La mia Libreria'),
-          bottom: const TabBar(
+          flexibleSpace: const TabBar(
             tabs: <Tab>[
               Tab(text: 'Tutti'),
               Tab(text: 'Categorie'),

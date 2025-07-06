@@ -13,8 +13,11 @@ class SchermataAggiuntaVinile extends StatefulWidget {
   final Vinile? vinile;
   final bool isEditing;
 
-  const SchermataAggiuntaVinile({super.key, this.vinile, this.isEditing = false});
-
+  const SchermataAggiuntaVinile({
+    super.key,
+    this.vinile,
+    this.isEditing = false,
+  });
 
   @override
   State<SchermataAggiuntaVinile> createState() => _SchermataFormState();
@@ -50,7 +53,6 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
     }
   }
 
-
   final picker = ImagePicker();
 
   Future<void> _scegliImmagine() async {
@@ -66,24 +68,26 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final vinileProvider = Provider.of<VinileProvider>(context, listen: false);
+      final vinileProvider = Provider.of<VinileProvider>(
+        context,
+        listen: false,
+      );
 
       // Controllo se il vinile esiste già
       final titoloNorm = titolo!.trim().toLowerCase();
       final artistaNorm = artista!.trim().toLowerCase();
 
-      final duplicato = vinileProvider.vinili.any((v) =>
-          v.titolo.trim().toLowerCase() == titoloNorm &&
-          v.artista.trim().toLowerCase() == artistaNorm &&
-          v.id != widget.vinile?.id
+      final duplicato = vinileProvider.vinili.any(
+        (v) =>
+            v.titolo.trim().toLowerCase() == titoloNorm &&
+            v.artista.trim().toLowerCase() == artistaNorm &&
+            v.id != widget.vinile?.id,
       );
 
       if (duplicato) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Vinile già esistente'),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Vinile già esistente')));
         return;
       }
 
@@ -119,15 +123,12 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
 
   @override
   Widget build(BuildContext context) {
-
     final categoriaProvider = Provider.of<CategoriaProvider>(context);
     final categorie = categoriaProvider.categorie;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          widget.isEditing ? 'Modifica Vinile' : 'Aggiungi Vinile',
-        ),
+        title: Text(widget.isEditing ? 'Modifica Vinile' : 'Aggiungi Vinile'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -136,15 +137,16 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-
               // Titolo
               TextFormField(
                 initialValue: titolo,
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  labelText: 'Titolo',
-                ),
-                validator: (val) => val == null || val.isEmpty ? 'Inserisci un titolo' : null,
+                decoration: const InputDecoration(labelText: 'Titolo'),
+                validator:
+                    (val) =>
+                        val == null || val.isEmpty
+                            ? 'Inserisci un titolo'
+                            : null,
                 onSaved: (val) => titolo = val,
               ),
 
@@ -152,10 +154,12 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               TextFormField(
                 initialValue: artista,
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  labelText: 'Artista',
-                ),
-                validator: (val) => val == null || val.isEmpty ? 'Inserisci un artista' : null,
+                decoration: const InputDecoration(labelText: 'Artista'),
+                validator:
+                    (val) =>
+                        val == null || val.isEmpty
+                            ? 'Inserisci un artista'
+                            : null,
                 onSaved: (val) => artista = val,
               ),
 
@@ -163,14 +167,14 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               TextFormField(
                 initialValue: anno?.toString(),
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  labelText: 'Anno',
-                ),
+                decoration: const InputDecoration(labelText: 'Anno'),
                 keyboardType: TextInputType.number,
                 validator: (val) {
                   if (val == null || val.isEmpty) return 'Inserisci un anno';
                   final parsed = int.tryParse(val);
-                  if (parsed == null || parsed < 1800 || parsed > DateTime.now().year) {
+                  if (parsed == null ||
+                      parsed < 1800 ||
+                      parsed > DateTime.now().year) {
                     return 'Anno non valido';
                   }
                   return null;
@@ -182,10 +186,12 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               TextFormField(
                 initialValue: etichetta,
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  labelText: 'Etichetta',
-                ),
-                validator: (val) => val == null || val.isEmpty ? 'Inserisci una etichetta' : null,
+                decoration: const InputDecoration(labelText: 'Etichetta'),
+                validator:
+                    (val) =>
+                        val == null || val.isEmpty
+                            ? 'Inserisci una etichetta'
+                            : null,
                 onSaved: (val) => etichetta = val,
               ),
 
@@ -194,21 +200,21 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                 alignedDropdown: true,
                 child: DropdownButtonFormField<int>(
                   value: categoriaId,
-                  items: categorie.map((c) {
-                    return DropdownMenuItem<int>(
-                      value: c.id,
-                      child: Text(c.nome),
-                    );
-                  }).toList(),
+                  items:
+                      categorie.map((c) {
+                        return DropdownMenuItem<int>(
+                          value: c.id,
+                          child: Text(c.nome),
+                        );
+                      }).toList(),
                   onChanged: (val) => setState(() => categoriaId = val),
                   onSaved: (val) => categoriaId = val,
-                  decoration: const InputDecoration(
-                    labelText: 'Categoria',
-                  ),
+                  decoration: const InputDecoration(labelText: 'Categoria'),
                   dropdownColor: const Color(0xFF001237),
                   style: const TextStyle(color: Colors.white),
-                  validator: (val) => val == null ? 'Seleziona una categoria' : null,
-                )
+                  validator:
+                      (val) => val == null ? 'Seleziona una categoria' : null,
+                ),
               ),
 
               // Condizione
@@ -216,13 +222,17 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                 alignedDropdown: true,
                 child: DropdownButtonFormField<String>(
                   value: condizione,
-                  items: condizioni.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                  items:
+                      condizioni
+                          .map(
+                            (c) => DropdownMenuItem(value: c, child: Text(c)),
+                          )
+                          .toList(),
                   onChanged: (val) => setState(() => condizione = val),
                   onSaved: (val) => condizione = val,
-                  validator: (val) => val == null ? 'Seleziona una condizione' : null,
-                  decoration: const InputDecoration(
-                    labelText: 'Condizione',
-                  ),
+                  validator:
+                      (val) => val == null ? 'Seleziona una condizione' : null,
+                  decoration: const InputDecoration(labelText: 'Condizione'),
                   dropdownColor: const Color(0xFF001237),
                   style: const TextStyle(color: Colors.white),
                 ),
@@ -232,7 +242,10 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
 
               // Preferito
               SwitchListTile(
-                title: Text('Preferito', style: Theme.of(context).textTheme.bodyLarge),
+                title: Text(
+                  'Preferito',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 value: preferito,
                 onChanged: (val) => setState(() => preferito = val),
               ),
@@ -242,8 +255,13 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               // Immagine copertina
               ElevatedButton(
                 onPressed: _scegliImmagine,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
-                child: const Text('Seleziona immagine copertina', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue,
+                ),
+                child: const Text(
+                  'Seleziona immagine copertina',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               if (copertina != null)
                 Padding(
@@ -255,8 +273,13 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
 
               ElevatedButton(
                 onPressed: _salvaVinile,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
-                child: const Text('Salva vinile', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue,
+                ),
+                child: const Text(
+                  'Salva vinile',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
