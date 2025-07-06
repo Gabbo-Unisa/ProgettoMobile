@@ -8,10 +8,12 @@ class SchermataAggiuntaCategoria extends StatefulWidget {
   const SchermataAggiuntaCategoria({super.key});
 
   @override
-  State<SchermataAggiuntaCategoria> createState() => _SchermataAggiuntaCategoriaState();
+  State<SchermataAggiuntaCategoria> createState() =>
+      _SchermataAggiuntaCategoriaState();
 }
 
-class _SchermataAggiuntaCategoriaState extends State<SchermataAggiuntaCategoria> {
+class _SchermataAggiuntaCategoriaState
+    extends State<SchermataAggiuntaCategoria> {
   final _formKey = GlobalKey<FormState>();
   String? _nomeCategoria;
 
@@ -19,13 +21,16 @@ class _SchermataAggiuntaCategoriaState extends State<SchermataAggiuntaCategoria>
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final categoriaProvider = Provider.of<CategoriaProvider>(context, listen: false);
+      final categoriaProvider = Provider.of<CategoriaProvider>(
+        context,
+        listen: false,
+      );
 
       // Controllo se la categoria esiste già
       final nomeNorm = _nomeCategoria!.trim().toLowerCase();
 
       final duplicata = categoriaProvider.categorie.any(
-            (c) => c.nome.trim().toLowerCase() == nomeNorm,
+        (c) => c.nome.trim().toLowerCase() == nomeNorm,
       );
 
       if (duplicata) {
@@ -42,13 +47,10 @@ class _SchermataAggiuntaCategoriaState extends State<SchermataAggiuntaCategoria>
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nuova Categoria'),
-      ),
+      appBar: AppBar(title: const Text('Nuova Categoria')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -56,18 +58,19 @@ class _SchermataAggiuntaCategoriaState extends State<SchermataAggiuntaCategoria>
           child: Column(
             children: [
               TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Nome categoria'
-                ),
-                validator: (value) =>
-                value == null || value.isEmpty ? 'Inserisci un nome' : null,
+                decoration: const InputDecoration(labelText: 'Nome categoria'),
+                validator:
+                    (value) =>
+                        value == null || value.isEmpty
+                            ? 'Inserisci un nome'
+                            : null,
                 onSaved: (value) => _nomeCategoria = value,
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
+              const SizedBox(height: 40),
+              FloatingActionButton.extended(
                 onPressed: _salvaCategoria,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
-                child: const Text('Salva', style: TextStyle(color: Colors.white)),
+                icon: const Icon(Icons.save),
+                label: const Text('Salva categoria'),
               ),
             ],
           ),

@@ -10,12 +10,14 @@ import 'dettaglio_vinile.dart';
 
 class ViniliListView extends StatelessWidget {
   final List<Vinile> vinili;
+  final String? categoria;
   final String messaggio;
 
   const ViniliListView({
     super.key,
     required this.vinili,
     required this.messaggio,
+    this.categoria,
   });
 
   @override

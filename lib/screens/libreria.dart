@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vinyl_collection_app/screens/vinili_list_view.dart';
 
 import '../providers/vinile_provider.dart';
 import '../providers/categoria_provider.dart';
 
 import '../models/categoria.dart';
 import 'dettaglio_vinile.dart';
-import 'lista_vinili_per_categoria.dart';
 import 'form_categoria.dart';
+import 'vinili_list_view.dart';
 
 class SchermataLibreria extends StatefulWidget {
   const SchermataLibreria({super.key});
@@ -96,12 +95,16 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
                 context,
                 MaterialPageRoute(
                   builder:
-                      (context) => ListaViniliPerCategoria(
-                        categoria: 'Senza categoria',
-                        vinili:
-                            provider.vinili
-                                .where((v) => v.categoriaId == null)
-                                .toList(),
+                      (context) => Scaffold(
+                        appBar: AppBar(title: Text("Senza categoria")),
+                        body: ViniliListView(
+                          vinili:
+                              provider.vinili
+                                  .where((v) => v.categoriaId == null)
+                                  .toList(),
+                          categoria: "Senza categoria",
+                          messaggio: 'Nessun vinile senza categoria',
+                        ),
                       ),
                 ),
               );
@@ -151,12 +154,16 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
               context,
               MaterialPageRoute(
                 builder:
-                    (context) => ListaViniliPerCategoria(
-                      categoria: cat.nome,
-                      vinili:
-                          provider.vinili
-                              .where((v) => v.categoriaId == cat.id)
-                              .toList(),
+                    (context) => Scaffold(
+                      appBar: AppBar(title: Text(cat.nome)),
+                      body: ViniliListView(
+                        vinili:
+                            provider.vinili
+                                .where((v) => v.categoriaId == cat.id)
+                                .toList(),
+                        categoria: cat.nome,
+                        messaggio: 'Nessun vinile in ${cat.nome}',
+                      ),
                     ),
               ),
             );

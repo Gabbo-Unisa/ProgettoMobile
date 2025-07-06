@@ -17,7 +17,7 @@ class AppTheme {
     ),
 
     tabBarTheme: const TabBarThemeData(
-      indicatorColor: Colors.lightBlue,
+      indicatorColor: Colors.deepPurple,
       labelColor: Colors.white,
       unselectedLabelColor: Colors.white60,
     ),
