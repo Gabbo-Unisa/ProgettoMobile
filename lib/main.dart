@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'providers/vinile_provider.dart';
 import 'providers/categoria_provider.dart';
@@ -8,7 +9,7 @@ import 'providers/statistiche_provider.dart';
 
 import 'screens/schermata_principale.dart';
 import 'screens/schermata_categorie.dart';
-import 'screens/schermata_profilo.dart';
+import 'screens/schermata_statistiche.dart';
 import 'theme/app_theme.dart';
 
 import 'screens/form_vinile.dart';
@@ -47,7 +48,9 @@ class MyApp extends StatelessWidget {
       title: 'VinylVault',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: const VistaTabs(title: 'VinylVault'),
+      home: SafeArea(
+          child: const VistaTabs(title: 'VinylVault')
+      ),
     );
   }
 }
@@ -67,17 +70,17 @@ class _VistaTabsState extends State<VistaTabs> {
   static const List<Widget> _screens = [
     SchermataPrincipale(),
     SchermataCategorie(),
-    SchermataProfilo(),
+    SchermataStatistiche(),
   ];
 
   void _onItemTapped(int index) {
     setState(() => _selectedIndex = index);
   }
 
-  static const List<BottomNavigationBarItem> _navItems = [
+  static final List<BottomNavigationBarItem> _navItems = [
     BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
-    BottomNavigationBarItem(icon: Icon(Icons.library_add), label: 'Categorie'),
-    BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profilo'),
+    BottomNavigationBarItem(icon: Icon(MdiIcons.bookshelf), label: 'Libreria'),
+    BottomNavigationBarItem(icon: Icon(MdiIcons.chartArc), label: 'Statistiche'),
   ];
 
   @override

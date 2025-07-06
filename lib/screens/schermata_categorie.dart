@@ -46,8 +46,8 @@ class _SchermataCategorieState extends State<SchermataCategorie> {
               TabBar(
                 tabs: <Tab>[
                   Tab(text: 'Tutti'),
+                  Tab(text: 'Categorie'),
                   Tab(text: 'Preferiti'),
-                  Tab(text: 'Statistiche'),
                 ],
               ),
             ],
@@ -55,9 +55,9 @@ class _SchermataCategorieState extends State<SchermataCategorie> {
         ),
         body: TabBarView(
           children: <Widget>[
-            _buildTabCategorie(provider),
-            _buildTabPreferiti(provider),
             const Center(child: Text('Statistiche')),
+            _buildTabCategorie(provider),
+            _buildTabPreferiti(provider)
           ],
         ),
       ),

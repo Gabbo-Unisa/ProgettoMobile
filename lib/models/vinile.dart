@@ -22,6 +22,7 @@ class Vinile {
     this.categoriaId,
   });
 
+
   // Converte un Vinile in una Map; le chiavi sono le colonne
   // della tabella 'vinili' nel database
   Map<String, dynamic> toMap() {
