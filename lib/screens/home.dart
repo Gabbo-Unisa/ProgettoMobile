@@ -60,6 +60,7 @@ class SchermataPrincipale extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 100),
                       const Text(
                         'Ancora nessun vinile nella tua collezione',
                         style: TextStyle(
@@ -71,7 +72,14 @@ class SchermataPrincipale extends StatelessWidget {
                       SizedBox(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightBlue,
+                            backgroundColor: Colors.deepPurple,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0,
+                              vertical: 15.0,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14.0),
+                            ),
                           ),
                           onPressed: () {
                             Navigator.push(

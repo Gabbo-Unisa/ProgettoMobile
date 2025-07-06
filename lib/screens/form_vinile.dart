@@ -149,45 +149,41 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               // Copertina
               GestureDetector(
                 onTap: _scegliImmagine,
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child:
-                      copertina != null
-                          ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              copertina!,
-                              fit: BoxFit.contain,
-                              width: double.infinity,
-                              alignment: Alignment.center,
-                            ),
-                          )
-                          : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.image,
-                                size: 48,
-                                color: Colors.white54,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Nessuna copertina\nTocca per selezionare',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 16,
+                child: Center(
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.white30),
+                    ),
+                    child:
+                        copertina != null
+                            ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(copertina!, fit: BoxFit.cover),
+                            )
+                            : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.image_not_supported,
+                                  size: 48,
+                                  color: Colors.white38,
                                 ),
-                              ),
-                            ],
-                          ),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Nessuna copertina',
+                                  style: TextStyle(color: Colors.white54),
+                                ),
+                              ],
+                            ),
+                  ),
                 ),
               ),
+
               const SizedBox(height: 24),
 
               // Titolo
