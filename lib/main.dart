@@ -88,7 +88,7 @@ class _VistaTabsState extends State<VistaTabs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          _selectedIndex == 2
+          _selectedIndex == 3
               ? null
               : AppBar(
                 title: Row(
