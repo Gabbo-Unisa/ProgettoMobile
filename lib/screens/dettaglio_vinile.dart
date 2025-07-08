@@ -23,6 +23,7 @@ class DettaglioVinile extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        // Nome vinile come titolo
         title: Text(vinile.titolo),
         actions: [
           IconButton(
@@ -95,6 +96,7 @@ class DettaglioVinile extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
+                  // Copertina
                   Center(
                     // Centra solo la copertina
                     child: Container(
@@ -153,6 +155,7 @@ class DettaglioVinile extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
+              // Artista
               Text('Artista:', style: Theme.of(context).textTheme.labelMedium),
               Text(
                 vinile.artista,
@@ -160,42 +163,67 @@ class DettaglioVinile extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              Text('Anno:', style: Theme.of(context).textTheme.labelMedium),
-              Text(
-                '${vinile.anno}',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 12),
+              // Anno (opzionale)
+              if (vinile.anno != null) ...[
+                Text('Anno:', style: Theme.of(context).textTheme.labelMedium),
+                Text(
+                  '${vinile.anno}',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 12),
+              ],
 
-              Text(
-                'Categoria:',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              Text(
-                categoria.nome,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 12),
+              // Categoria (opzionale)
+              if (vinile.categoriaId != null) ...[
+                Text(
+                  'Categoria:',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                Text(
+                  categoria.nome,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 12),
+              ],
 
-              Text(
-                'Etichetta:',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              Text(
-                vinile.etichetta,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 12),
+              // Etichetta (opzionale)
+              if (vinile.etichetta != null &&
+                  vinile.etichetta!.trim().isNotEmpty) ...[
+                Text(
+                  'Etichetta:',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                Text(
+                  vinile.etichetta!,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 12),
+              ],
 
-              Text(
-                'Condizione:',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              Text(
-                vinile.condizione,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 12),
+              // Condizione (opzionale)
+              if (vinile.condizione != null &&
+                  vinile.condizione!.trim().isNotEmpty) ...[
+                Text(
+                  'Condizione:',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                Text(
+                  vinile.condizione!,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 12),
+              ],
+
+              // Note (opzionale)
+              if (vinile.note != null && vinile.note!.trim().isNotEmpty) ...[
+                Text('Note:', style: Theme.of(context).textTheme.labelMedium),
+                Text(
+                  vinile.note!,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+              ],
             ],
           ),
         ),

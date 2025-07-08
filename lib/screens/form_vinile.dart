@@ -30,7 +30,7 @@ class SchermataAggiuntaVinile extends StatefulWidget {
 class _SchermataFormState extends State<SchermataAggiuntaVinile> {
   final _formKey = GlobalKey<FormState>();
 
-  String? titolo, artista, etichetta, condizione;
+  String? titolo, artista, etichetta, condizione, note;
   int? anno;
   File? copertina;
   bool preferito = false;
@@ -50,6 +50,7 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
       etichetta = v.etichetta;
       condizione = v.condizione;
       preferito = v.preferito;
+      note = v.note;
       if (v.copertina != null) {
         copertina = File(v.copertina!);
       }
@@ -99,10 +100,11 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
         id: widget.vinile?.id,
         titolo: titolo!,
         artista: artista!,
-        anno: anno!,
-        etichetta: etichetta!,
-        condizione: condizione!,
+        anno: anno,
+        etichetta: etichetta,
+        condizione: condizione,
         preferito: preferito,
+        note: note,
         copertina: copertina?.path,
         categoriaId: categoriaId,
       );
@@ -153,38 +155,87 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               // Copertina
               GestureDetector(
                 onTap: _scegliImmagine,
-                child: Center(
-                  child: Container(
-                    margin: const EdgeInsets.all(10),
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white12,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.white30),
-                    ),
-                    child:
-                        copertina != null
-                            ? ClipRRect(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.none,
+                      children: [
+                        // Centra l'immagine orizzontalmente
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          width: 150,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white12,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.white30),
+                          ),
+                          child:
+                              copertina != null
+                                  ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.file(
+                                      copertina!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                  : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.image_not_supported,
+                                        size: 48,
+                                        color: Colors.white38,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'Nessuna copertina',
+                                        style: TextStyle(color: Colors.white54),
+                                      ),
+                                    ],
+                                  ),
+                        ),
+
+                        // Bottone delete in alto a destra rispetto all'immagine
+                        if (copertina != null)
+                          Positioned(
+                            right: -5, // più a destra
+                            top: -5, // più in alto
+                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
-                              child: Image.file(copertina!, fit: BoxFit.cover),
-                            )
-                            : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(
-                                  Icons.image_not_supported,
-                                  size: 48,
-                                  color: Colors.white38,
+                              child: SizedBox(
+                                width: 36,
+                                height: 36,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      copertina = null;
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    padding:
+                                        EdgeInsets
+                                            .zero, // niente spazio interno
+                                    elevation: 2,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  'Nessuna copertina',
-                                  style: TextStyle(color: Colors.white54),
-                                ),
-                              ],
+                              ),
                             ),
-                  ),
+                          ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
 
@@ -200,7 +251,7 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                         val == null || val.isEmpty
                             ? 'Inserisci un titolo'
                             : null,
-                onSaved: (val) => titolo = val,
+                onSaved: (val) => titolo = val?.trim(),
               ),
 
               // Artista
@@ -213,7 +264,7 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                         val == null || val.isEmpty
                             ? 'Inserisci un artista'
                             : null,
-                onSaved: (val) => artista = val,
+                onSaved: (val) => artista = val?.trim(),
               ),
 
               // Anno
@@ -223,13 +274,17 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                 decoration: const InputDecoration(labelText: 'Anno'),
                 keyboardType: TextInputType.number,
                 validator: (val) {
-                  if (val == null || val.isEmpty) return 'Inserisci un anno';
-                  final parsed = int.tryParse(val);
-                  if (parsed == null ||
-                      parsed < 1800 ||
-                      parsed > DateTime.now().year) {
-                    return 'Anno non valido';
+                  if (val == null || val.trim().isEmpty) {
+                    return null; // campo opzionale
                   }
+
+                  final parsed = int.tryParse(val);
+                  final currentYear = DateTime.now().year;
+
+                  if (parsed == null || parsed < 1800 || parsed > currentYear) {
+                    return 'Anno non valido (tra 1800 e $currentYear)';
+                  }
+
                   return null;
                 },
                 onSaved: (val) => anno = int.tryParse(val ?? ''),
@@ -240,11 +295,6 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                 initialValue: etichetta,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(labelText: 'Etichetta'),
-                validator:
-                    (val) =>
-                        val == null || val.isEmpty
-                            ? 'Inserisci una etichetta'
-                            : null,
                 onSaved: (val) => etichetta = val,
               ),
 
@@ -252,15 +302,21 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               ButtonTheme(
                 alignedDropdown: true,
                 child: DropdownButtonFormField<int>(
-                  value: categoriaId,
+                  value:
+                      categoriaId != -1 &&
+                              categorie.any((c) => c.id == categoriaId)
+                          ? categoriaId
+                          : null, // evita errori di valore non presente
                   items: [
+                    // aggiunge le categorie esistenti, se ce ne sono
                     ...categorie.map(
                       (c) => DropdownMenuItem<int>(
                         value: c.id,
                         child: Text(c.nome),
                       ),
                     ),
-                    DropdownMenuItem<int>(
+                    // aggiunge sempre l'opzione "aggiungi nuova categoria"
+                    const DropdownMenuItem<int>(
                       value: -1,
                       child: Text(
                         '+ Aggiungi nuova categoria',
@@ -268,26 +324,30 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                       ),
                     ),
                   ],
-                  onChanged: (val) {
+                  onChanged: (val) async {
                     if (val == -1) {
-                      Navigator.push(
+                      final nuovaCategoria = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder:
                               (context) => const SchermataAggiuntaCategoria(),
                         ),
                       );
-                      setState(() => categoriaId = null);
+                      // Dopo il ritorno, aggiorna le categorie (se usi un Provider o simili)
+                      setState(() {
+                        categoriaId =
+                            null; // oppure imposta direttamente la nuova categoria se vuoi
+                      });
                     } else {
-                      setState(() => categoriaId = null);
+                      setState(() {
+                        categoriaId = val;
+                      });
                     }
                   },
                   onSaved: (val) => categoriaId = val,
                   decoration: const InputDecoration(labelText: 'Categoria'),
                   dropdownColor: const Color(0xFF001237),
                   style: const TextStyle(color: Colors.white),
-                  validator:
-                      (val) => val == null ? 'Seleziona una categoria' : null,
                 ),
               ),
 
@@ -304,12 +364,24 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                           .toList(),
                   onChanged: (val) => setState(() => condizione = val),
                   onSaved: (val) => condizione = val,
-                  validator:
-                      (val) => val == null ? 'Seleziona una condizione' : null,
                   decoration: const InputDecoration(labelText: 'Condizione'),
                   dropdownColor: const Color(0xFF001237),
                   style: const TextStyle(color: Colors.white),
                 ),
+              ),
+
+              // Note
+              TextFormField(
+                maxLines: 3,
+                decoration: const InputDecoration(
+                  labelText: 'Note',
+                  hintText: 'Aggiungi note...',
+                  border: OutlineInputBorder(),
+                  alignLabelWithHint:
+                      true, // per centrare verticalmente la label
+                ),
+                style: const TextStyle(color: Colors.white),
+                onSaved: (val) => note = val,
               ),
 
               const SizedBox(height: 100),

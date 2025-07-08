@@ -26,9 +26,22 @@ class _SchermataAggiuntaCategoriaState
         listen: false,
       );
 
-      // Controllo se la categoria esiste già
-      final nomeNorm = _nomeCategoria!.trim().toLowerCase();
+      // Normalizza il nome: rimuove spazi extra, mette in minuscolo
+      final nomeNorm =
+          _nomeCategoria!.trim().replaceAll(RegExp(r'\s+'), ' ').toLowerCase();
 
+      // Il nome finale avrà la prima lettera maiuscola di ogni parola
+      final nomeFinale = nomeNorm
+          .split(' ')
+          .map(
+            (parola) =>
+                parola.isNotEmpty
+                    ? '${parola[0].toUpperCase()}${parola.substring(1)}'
+                    : '',
+          )
+          .join(' ');
+
+      // Controlla se esiste già una categoria con lo stesso nome (ignorando maiuscole/minuscole)
       final duplicata = categoriaProvider.categorie.any(
         (c) => c.nome.trim().toLowerCase() == nomeNorm,
       );
@@ -40,7 +53,7 @@ class _SchermataAggiuntaCategoriaState
         return;
       }
 
-      final nuovaCategoria = Categoria(nome: _nomeCategoria!.trim());
+      final nuovaCategoria = Categoria(nome: nomeFinale);
       await categoriaProvider.aggiungiCategoria(nuovaCategoria);
 
       Navigator.pop(context);

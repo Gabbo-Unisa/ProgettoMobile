@@ -2,26 +2,26 @@ class Vinile {
   final int? id;
   final String titolo;
   final String artista;
-  final int anno;
-  final String etichetta;
-  final String condizione;
+  final int? anno;
+  final String? etichetta;
+  final String? condizione;
   final String? copertina;
   final bool preferito;
+  final String? note;
   final int? categoriaId;
-
 
   const Vinile({
     this.id,
     required this.titolo,
     required this.artista,
-    required this.anno,
-    required this.etichetta,
-    required this.condizione,
+    this.anno,
+    this.etichetta,
+    this.condizione,
     this.copertina,
     this.preferito = false,
+    this.note,
     this.categoriaId,
   });
-
 
   // Converte un Vinile in una Map; le chiavi sono le colonne
   // della tabella 'vinili' nel database
@@ -34,16 +34,16 @@ class Vinile {
       'condizione': condizione,
       'copertina': copertina,
       'preferito': preferito ? 1 : 0,
+      'note': note,
       'categoriaId': categoriaId,
     };
 
     return map;
   }
 
-
   // Serve per ricreare un oggetto Vinile a partire da una riga del database
   // (che viene restituita come una Map<String, dynamic> da SQLite)
-  factory Vinile.fromMap(Map<String,dynamic> map) {
+  factory Vinile.fromMap(Map<String, dynamic> map) {
     return Vinile(
       id: map['id'],
       titolo: map['titolo'],
@@ -53,6 +53,7 @@ class Vinile {
       condizione: map['condizione'],
       copertina: map['copertina'],
       preferito: map['preferito'] == 1,
+      note: map['note'],
       categoriaId: map['categoriaId'],
     );
   }
@@ -60,7 +61,7 @@ class Vinile {
   @override
   String toString() {
     return 'Vinile(id: $id, titolo: $titolo, artista: $artista, anno: $anno, '
-           'etichetta: $etichetta, condizione: $condizione, copertina: $copertina, '
-           'preferito: $preferito, categoriaId: $categoriaId)';
+        'etichetta: $etichetta, condizione: $condizione, copertina: $copertina, '
+        'preferito: $preferito, note: $note, categoriaId: $categoriaId)';
   }
 }

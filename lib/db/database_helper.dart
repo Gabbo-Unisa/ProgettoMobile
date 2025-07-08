@@ -36,11 +36,12 @@ class DatabaseHelper {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             titolo TEXT NOT NULL,
             artista TEXT NOT NULL,
-            anno INTEGER NOT NULL,
-            etichetta TEXT NOT NULL,
-            condizione TEXT NOT NULL,
+            anno INTEGER,
+            etichetta TEXT,
+            condizione TEXT,
             copertina TEXT,
             preferito INTEGER NOT NULL,
+            note TEXT,
             categoriaId INTEGER,
             FOREIGN KEY (categoriaId) REFERENCES categorie(id) ON DELETE SET NULL
           )
@@ -80,11 +81,7 @@ class DatabaseHelper {
 
   Future<void> deleteVinile(int id) async {
     final db = await database;
-    await db.delete(
-      'vinili',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    await db.delete('vinili', where: 'id = ?', whereArgs: [id]);
   }
 
   // ----------------------------
@@ -108,10 +105,6 @@ class DatabaseHelper {
 
   Future<void> deleteCategoria(int id) async {
     final db = await database;
-    await db.delete(
-      'categorie',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+    await db.delete('categorie', where: 'id = ?', whereArgs: [id]);
   }
 }
