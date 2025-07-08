@@ -7,7 +7,7 @@ import '../providers/categoria_provider.dart';
 import '../providers/vinile_provider.dart';
 
 import '../models/vinile.dart';
-import 'dettaglio_vinile.dart';
+import '../screens/dettaglio_vinile.dart';
 
 class ListaViniliPerCategoria extends StatefulWidget {
   final String categoria;

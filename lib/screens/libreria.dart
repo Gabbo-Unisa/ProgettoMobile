@@ -7,8 +7,8 @@ import '../providers/categoria_provider.dart';
 import '../models/categoria.dart';
 import 'dettaglio_vinile.dart';
 import 'form_categoria.dart';
-import 'lista_vinili_per_categoria.dart';
-import 'vinili_list_view.dart';
+import '../widgets/lista_vinili_per_categoria.dart';
+import '../widgets/vinili_list_view.dart';
 
 class SchermataLibreria extends StatefulWidget {
   const SchermataLibreria({super.key});

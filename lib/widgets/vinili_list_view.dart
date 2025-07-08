@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../models/vinile.dart';
-import 'dettaglio_vinile.dart';
+import '../screens/dettaglio_vinile.dart';
 
 class ViniliListView extends StatelessWidget {
   final List<Vinile> vinili;

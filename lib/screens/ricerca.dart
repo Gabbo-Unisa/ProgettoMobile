@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/ricerca_provider.dart';
-import '../screens/vinili_list_view.dart';
+import '../widgets/vinili_list_view.dart';
 
 class SchermataRicerca extends StatefulWidget {
   const SchermataRicerca({super.key});
