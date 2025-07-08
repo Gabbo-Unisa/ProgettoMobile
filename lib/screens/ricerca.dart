@@ -38,8 +38,8 @@ class _SchermataRicercaState extends State<SchermataRicerca> {
                       controller: _controller,
                       autofocus: true,
                       decoration: const InputDecoration(
-                        hintText: 'Cerca per titolo o artista...',
-                        border: InputBorder.none,
+                        hintText: 'Cerca per titolo...',
+                        focusedBorder: InputBorder.none, //
                       ),
                       onChanged: (val) => ricercaProvider.aggiornaRicerca(val),
                     ),
