@@ -106,9 +106,7 @@ class _VistaTabsState extends State<VistaTabs> {
                   IconButton(
                     icon: const Icon(Icons.search_rounded),
                     tooltip: 'Ricerca',
-                    onPressed: () {
-                      //implementare ricerca
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),

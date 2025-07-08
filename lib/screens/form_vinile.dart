@@ -373,6 +373,7 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
               // Note
               TextFormField(
                 maxLines: 3,
+                initialValue: note,
                 decoration: const InputDecoration(
                   labelText: 'Note',
                   hintText: 'Aggiungi note...',
