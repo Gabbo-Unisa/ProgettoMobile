@@ -10,6 +10,7 @@ import 'providers/statistiche_provider.dart';
 import 'screens/home.dart';
 import 'screens/libreria.dart';
 import 'screens/statistiche.dart';
+import 'screens/ricerca.dart';
 import 'theme/app_theme.dart';
 
 import 'screens/form_vinile.dart';
@@ -88,25 +89,48 @@ class _VistaTabsState extends State<VistaTabs> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
+          // AppBar visibile solo in "Home" e "Libreria"
           _selectedIndex == 2
               ? null
               : AppBar(
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    // Icona app
                     Image.asset(
                       'assets/images/VinylVault.png',
                       height: 50,
                       width: 50,
                     ),
+                    // Nome app
                     Text(widget.title),
                   ],
                 ),
                 actions: <Widget>[
+                  // Ricerca
                   IconButton(
                     icon: const Icon(Icons.search_rounded),
                     tooltip: 'Ricerca',
-                    onPressed: () {},
+                    onPressed: () {
+                      // Recupero tutti i vinili
+                      final vinili =
+                          Provider.of<VinileProvider>(
+                            context,
+                            listen: false,
+                          ).vinili;
+                      // Imposto i vinili nel provider di ricerca
+                      Provider.of<RicercaProvider>(
+                        context,
+                        listen: false,
+                      ).impostaVinili(vinili);
+                      // Vai alla schermata di ricerca
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const SchermataRicerca(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

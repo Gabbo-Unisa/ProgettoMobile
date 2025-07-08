@@ -26,9 +26,7 @@ class ViniliListView extends StatelessWidget {
         final vinile = vinili[index];
         return ListTile(
           leading: ClipRRect(
-            borderRadius: BorderRadius.circular(
-              8,
-            ), // stesso raggio per entrambi
+            borderRadius: BorderRadius.circular(8),
             child:
                 vinile.copertina != null
                     ? SizedBox(
