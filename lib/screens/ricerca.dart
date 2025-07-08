@@ -4,18 +4,27 @@ import 'package:provider/provider.dart';
 import '../providers/ricerca_provider.dart';
 import '../screens/vinili_list_view.dart';
 
-class SchermataRicerca extends StatelessWidget {
+class SchermataRicerca extends StatefulWidget {
   const SchermataRicerca({super.key});
+
+  @override
+  State<SchermataRicerca> createState() => _SchermataRicercaState();
+}
+
+class _SchermataRicercaState extends State<SchermataRicerca> {
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final ricercaProvider = Provider.of<RicercaProvider>(context);
     final risultati = ricercaProvider.risultati;
+    final suggerimenti = ricercaProvider.suggerimenti;
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
+            // Barra di ricerca
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
               child: Row(
@@ -26,6 +35,7 @@ class SchermataRicerca extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextField(
+                      controller: _controller,
                       autofocus: true,
                       decoration: const InputDecoration(
                         hintText: 'Cerca per titolo o artista...',
@@ -48,10 +58,10 @@ class SchermataRicerca extends StatelessWidget {
                       ricercaProvider.suggerimenti.map((suggerimento) {
                         return ListTile(
                           title: Text(suggerimento),
-                          onTap:
-                              () => ricercaProvider.applicaSuggerimento(
-                                suggerimento,
-                              ),
+                          onTap: () {
+                            _controller.text = suggerimento;
+                            ricercaProvider.applicaSuggerimento(suggerimento);
+                          },
                         );
                       }).toList(),
                 ),
