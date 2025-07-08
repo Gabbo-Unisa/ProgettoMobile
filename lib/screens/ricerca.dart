@@ -37,11 +37,33 @@ class SchermataRicerca extends StatelessWidget {
                 ],
               ),
             ),
+
+            // Suggerimenti ricerca
+            if (ricercaProvider.suggerimenti.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  children:
+                      ricercaProvider.suggerimenti.map((suggerimento) {
+                        return ListTile(
+                          title: Text(suggerimento),
+                          onTap:
+                              () => ricercaProvider.applicaSuggerimento(
+                                suggerimento,
+                              ),
+                        );
+                      }).toList(),
+                ),
+              ),
+
             const Divider(height: 1, thickness: 1),
+
+            // Lista vinili
             Expanded(
               child: ViniliListView(
                 vinili: risultati,
-                messaggio: 'Nessun vinile trovatoA',
+                messaggio: 'Nessun vinile trovato.',
               ),
             ),
           ],
