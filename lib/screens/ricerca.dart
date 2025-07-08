@@ -39,7 +39,9 @@ class _SchermataRicercaState extends State<SchermataRicerca> {
                       autofocus: true,
                       decoration: const InputDecoration(
                         hintText: 'Cerca per titolo...',
-                        focusedBorder: InputBorder.none, //
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
                       ),
                       onChanged: (val) => ricercaProvider.aggiornaRicerca(val),
                     ),
@@ -50,26 +52,32 @@ class _SchermataRicercaState extends State<SchermataRicerca> {
 
             // Suggerimenti ricerca
             if (ricercaProvider.suggerimenti.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  children:
-                      ricercaProvider.suggerimenti.map((suggerimento) {
-                        return ListTile(
-                          title: Text(suggerimento),
-                          onTap: () {
-                            _controller.text = suggerimento;
-                            ricercaProvider.applicaSuggerimento(suggerimento);
-                          },
-                        );
-                      }).toList(),
+              Flexible(
+                child: Container(
+                  constraints: const BoxConstraints(
+                    maxHeight: 200,
+                  ), // altezza max
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: ricercaProvider.suggerimenti.length,
+                    itemBuilder: (context, index) {
+                      final suggerimento = ricercaProvider.suggerimenti[index];
+                      return ListTile(
+                        title: Text(suggerimento),
+                        onTap: () {
+                          _controller.text = suggerimento;
+                          ricercaProvider.applicaSuggerimento(suggerimento);
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
 
             const Divider(height: 1, thickness: 1),
 
-            // Lista vinili
+            // Lista vinili scrollabile e adattabile
             Expanded(
               child: ViniliListView(
                 vinili: risultati,

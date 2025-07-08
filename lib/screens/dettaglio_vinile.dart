@@ -88,143 +88,149 @@ class DettaglioVinile extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Copertina
-                  Center(
-                    // Centra solo la copertina
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.white12,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.white30),
-                      ),
-                      child:
-                          vinile.copertina != null &&
-                                  vinile.copertina!.isNotEmpty
-                              ? ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.file(
-                                  File(vinile.copertina!),
-                                  fit: BoxFit.cover,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Copertina
+                    Center(
+                      // Centra solo la copertina
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.white30),
+                        ),
+                        child:
+                            vinile.copertina != null &&
+                                    vinile.copertina!.isNotEmpty
+                                ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    File(vinile.copertina!),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                                : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.image_not_supported,
+                                      size: 48,
+                                      color: Colors.white38,
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      'Nessuna copertina',
+                                      style: TextStyle(color: Colors.white54),
+                                    ),
+                                  ],
                                 ),
-                              )
-                              : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    Icons.image_not_supported,
-                                    size: 48,
-                                    color: Colors.white38,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    'Nessuna copertina',
-                                    style: TextStyle(color: Colors.white54),
-                                  ),
-                                ],
-                              ),
-                    ),
-                  ),
-                  Positioned(
-                    right:
-                        MediaQuery.of(context).size.width / 2 -
-                        104, // allineata appena fuori la copertina
-                    top: -1.5,
-                    child: Transform.rotate(
-                      angle: 0.3,
-                      child: Icon(
-                        vinile.preferito
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: vinile.preferito ? Colors.red : Colors.white24,
-                        size: 28,
-                        grade: -30.0,
                       ),
                     ),
+                    Positioned(
+                      right:
+                          MediaQuery.of(context).size.width / 2 -
+                          104, // allineata appena fuori la copertina
+                      top: -1.5,
+                      child: Transform.rotate(
+                        angle: 0.3,
+                        child: Icon(
+                          vinile.preferito
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: vinile.preferito ? Colors.red : Colors.white24,
+                          size: 28,
+                          grade: -30.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Artista
+                Text(
+                  'Artista:',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                Text(
+                  vinile.artista,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 12),
+
+                // Anno (opzionale)
+                if (vinile.anno != null) ...[
+                  Text('Anno:', style: Theme.of(context).textTheme.labelMedium),
+                  Text(
+                    '${vinile.anno}',
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
+                  const SizedBox(height: 12),
                 ],
-              ),
-              const SizedBox(height: 16),
-              // Artista
-              Text('Artista:', style: Theme.of(context).textTheme.labelMedium),
-              Text(
-                vinile.artista,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 12),
 
-              // Anno (opzionale)
-              if (vinile.anno != null) ...[
-                Text('Anno:', style: Theme.of(context).textTheme.labelMedium),
-                Text(
-                  '${vinile.anno}',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 12),
-              ],
+                // Categoria (opzionale)
+                if (vinile.categoriaId != null) ...[
+                  Text(
+                    'Categoria:',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  Text(
+                    categoria.nome,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 12),
+                ],
 
-              // Categoria (opzionale)
-              if (vinile.categoriaId != null) ...[
-                Text(
-                  'Categoria:',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  categoria.nome,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 12),
-              ],
+                // Etichetta (opzionale)
+                if (vinile.etichetta != null &&
+                    vinile.etichetta!.trim().isNotEmpty) ...[
+                  Text(
+                    'Etichetta:',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  Text(
+                    vinile.etichetta!,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 12),
+                ],
 
-              // Etichetta (opzionale)
-              if (vinile.etichetta != null &&
-                  vinile.etichetta!.trim().isNotEmpty) ...[
-                Text(
-                  'Etichetta:',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  vinile.etichetta!,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 12),
-              ],
+                // Condizione (opzionale)
+                if (vinile.condizione != null &&
+                    vinile.condizione!.trim().isNotEmpty) ...[
+                  Text(
+                    'Condizione:',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  Text(
+                    vinile.condizione!,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 12),
+                ],
 
-              // Condizione (opzionale)
-              if (vinile.condizione != null &&
-                  vinile.condizione!.trim().isNotEmpty) ...[
-                Text(
-                  'Condizione:',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  vinile.condizione!,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                const SizedBox(height: 12),
+                // Note (opzionale)
+                if (vinile.note != null && vinile.note!.trim().isNotEmpty) ...[
+                  Text('Note:', style: Theme.of(context).textTheme.labelMedium),
+                  Text(
+                    vinile.note!,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 12),
+                ],
               ],
-
-              // Note (opzionale)
-              if (vinile.note != null && vinile.note!.trim().isNotEmpty) ...[
-                Text('Note:', style: Theme.of(context).textTheme.labelMedium),
-                Text(
-                  vinile.note!,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-              ],
-            ],
+            ),
           ),
         ),
       ),
