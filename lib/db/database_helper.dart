@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -43,6 +44,7 @@ class DatabaseHelper {
             preferito INTEGER NOT NULL,
             note TEXT,
             categoriaId INTEGER,
+            dataAggiunta TEXT DEFAULT (date('now')),
             FOREIGN KEY (categoriaId) REFERENCES categorie(id) ON DELETE SET NULL
           )
         ''');

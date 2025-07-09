@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import 'db/database_helper.dart';
 import 'providers/vinile_provider.dart';
 import 'providers/categoria_provider.dart';
 import 'providers/ricerca_provider.dart';
@@ -90,7 +91,7 @@ class _VistaTabsState extends State<VistaTabs> {
     return Scaffold(
       appBar:
           // AppBar visibile solo in "Home" e "Libreria"
-          _selectedIndex == 3
+          _selectedIndex == 2
               ? null
               : AppBar(
                 title: Row(

@@ -9,6 +9,7 @@ class Vinile {
   final bool preferito;
   final String? note;
   final int? categoriaId;
+  final String? dataAggiunta; // Valore di default gestito dal database
 
   const Vinile({
     this.id,
@@ -21,6 +22,7 @@ class Vinile {
     this.preferito = false,
     this.note,
     this.categoriaId,
+    this.dataAggiunta,
   });
 
   // Converte un Vinile in una Map; le chiavi sono le colonne
@@ -55,6 +57,7 @@ class Vinile {
       preferito: map['preferito'] == 1,
       note: map['note'],
       categoriaId: map['categoriaId'],
+      dataAggiunta: map['dataAggiunta'],
     );
   }
 
@@ -62,6 +65,6 @@ class Vinile {
   String toString() {
     return 'Vinile(id: $id, titolo: $titolo, artista: $artista, anno: $anno, '
         'etichetta: $etichetta, condizione: $condizione, copertina: $copertina, '
-        'preferito: $preferito, note: $note, categoriaId: $categoriaId)';
+        'preferito: $preferito, note: $note, categoriaId: $categoriaId), dataAggiunta: $dataAggiunta)';
   }
 }
