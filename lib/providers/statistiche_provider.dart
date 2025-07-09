@@ -45,12 +45,12 @@ class StatisticheProvider extends ChangeNotifier {
 
     // Crescita annua (vinili aggiunti per anno)
     final crescitaResult = await db.rawQuery('''
-      SELECT SUBSTR(dataAggiunta, 1, 4) as anno, COUNT(*) as totale
-      FROM vinili
-      WHERE dataAggiunta IS NOT NULL
-      GROUP BY anno
-      ORDER BY anno ASC
-      ''');
+  SELECT strftime('%Y', dataAggiunta) as anno, COUNT(*) as totale
+  FROM vinili
+  WHERE dataAggiunta IS NOT NULL
+  GROUP BY strftime('%Y', dataAggiunta)
+  ORDER BY strftime('%Y', dataAggiunta) ASC
+  ''');
     crescitaAnnuale = {
       for (var row in crescitaResult)
         row['anno'] as String: row['totale'] as int,
