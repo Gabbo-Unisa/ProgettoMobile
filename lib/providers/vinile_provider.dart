@@ -14,8 +14,17 @@ class VinileProvider with ChangeNotifier {
 
   // Restituisce i vinili più recenti basandosi sugli ID (più alti = più recenti)
   List<Vinile> getViniliRecenti({int limite = 5}) {
-    final validi = _vinili.where((v) => v.id != null).toList();
-    validi.sort((a, b) => (b.id ?? 0).compareTo(a.id ?? 0));
+    final validi =
+        _vinili.where((v) => v.dataAggiunta != null && v.id != null).toList();
+
+    validi.sort((a, b) {
+      final cmpData = b.dataAggiunta!.compareTo(a.dataAggiunta!);
+      if (cmpData != 0) return cmpData;
+
+      // In caso di stessa data, ordina per id decrescente
+      return (b.id ?? 0).compareTo(a.id ?? 0);
+    });
+
     return validi.take(limite).toList();
   }
 
