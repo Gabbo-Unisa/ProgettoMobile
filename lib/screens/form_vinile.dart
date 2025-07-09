@@ -275,75 +275,101 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                 ),
 
                 // Categoria
-                ButtonTheme(
-                  alignedDropdown: true,
-                  child: DropdownButtonFormField<int>(
-                    value:
-                        categoriaId != -1 &&
-                                categorie.any((c) => c.id == categoriaId)
-                            ? categoriaId
-                            : null, // evita errori di valore non presente
-                    items: [
-                      // aggiunge le categorie esistenti, se ce ne sono
-                      ...categorie.map(
-                        (c) => DropdownMenuItem<int>(
-                          value: c.id,
-                          child: Text(c.nome),
-                        ),
-                      ),
-                      // aggiunge sempre l'opzione "aggiungi nuova categoria"
-                      const DropdownMenuItem<int>(
-                        value: -1,
-                        child: Text(
-                          '+ Aggiungi nuova categoria',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ),
-                    ],
-                    onChanged: (val) async {
-                      if (val == -1) {
-                        final nuovaCategoria = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => const SchermataAggiuntaCategoria(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<int>(
+                        value:
+                            categoriaId != -1 &&
+                                    categorie.any((c) => c.id == categoriaId)
+                                ? categoriaId
+                                : null,
+                        items: [
+                          ...categorie.map(
+                            (c) => DropdownMenuItem<int>(
+                              value: c.id,
+                              child: Text(c.nome),
+                            ),
                           ),
-                        );
-                        // Dopo il ritorno, aggiorna le categorie (se usi un Provider o simili)
-                        setState(() {
-                          categoriaId =
-                              null; // oppure imposta direttamente la nuova categoria se vuoi
-                        });
-                      } else {
-                        setState(() {
-                          categoriaId = val;
-                        });
-                      }
-                    },
-                    onSaved: (val) => categoriaId = val,
-                    decoration: const InputDecoration(labelText: 'Categoria'),
-                    dropdownColor: const Color(0xFF001237),
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                          const DropdownMenuItem<int>(
+                            value: -1,
+                            child: Text(
+                              '+ Aggiungi nuova categoria',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                        ],
+                        onChanged: (val) async {
+                          if (val == -1) {
+                            final nuovaCategoria = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        const SchermataAggiuntaCategoria(),
+                              ),
+                            );
+                            setState(() => categoriaId = null);
+                          } else {
+                            setState(() => categoriaId = val);
+                          }
+                        },
+                        onSaved: (val) => categoriaId = val,
+                        decoration: const InputDecoration(
+                          labelText: 'Categoria',
+                        ),
+                        dropdownColor: const Color(0xFF001237),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    if (categoriaId != null)
+                      IconButton(
+                        icon: const Icon(
+                          Icons.remove_circle_outline,
+                          color: Colors.redAccent,
+                        ),
+                        onPressed: () => setState(() => categoriaId = null),
+                        tooltip: 'Rimuovi categoria',
+                      ),
+                  ],
                 ),
 
                 // Condizione
-                ButtonTheme(
-                  alignedDropdown: true,
-                  child: DropdownButtonFormField<String>(
-                    value: condizione,
-                    items:
-                        condizioni
-                            .map(
-                              (c) => DropdownMenuItem(value: c, child: Text(c)),
-                            )
-                            .toList(),
-                    onChanged: (val) => setState(() => condizione = val),
-                    onSaved: (val) => condizione = val,
-                    decoration: const InputDecoration(labelText: 'Condizione'),
-                    dropdownColor: const Color(0xFF001237),
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: condizione,
+                        items:
+                            condizioni
+                                .map(
+                                  (c) => DropdownMenuItem(
+                                    value: c,
+                                    child: Text(c),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (val) => setState(() => condizione = val),
+                        onSaved: (val) => condizione = val,
+                        decoration: const InputDecoration(
+                          labelText: 'Condizione',
+                        ),
+                        dropdownColor: const Color(0xFF001237),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    if (condizione != null)
+                      IconButton(
+                        icon: const Icon(
+                          Icons.remove_circle_outline,
+                          color: Colors.redAccent,
+                        ),
+                        onPressed: () => setState(() => condizione = null),
+                        tooltip: 'Rimuovi condizione',
+                      ),
+                  ],
                 ),
 
                 // Note
