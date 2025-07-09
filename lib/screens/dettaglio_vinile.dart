@@ -229,6 +229,20 @@ class DettaglioVinile extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                 ],
+
+                // Data di aggiunta (opzionale)
+                if (vinile.dataAggiunta != null &&
+                    vinile.dataAggiunta!.trim().isNotEmpty) ...[
+                  Text(
+                    'Aggiunto il:',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                  Text(
+                    vinile.dataAggiunta!,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 12),
+                ],
               ],
             ),
           ),

@@ -73,7 +73,13 @@ class _VistaTabsState extends State<VistaTabs> {
     SchermataStatistiche(),
   ];
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
+    if (index == 2) {
+      await Provider.of<StatisticheProvider>(
+        context,
+        listen: false,
+      ).caricaStatistiche();
+    }
     setState(() => _selectedIndex = index);
   }
 
