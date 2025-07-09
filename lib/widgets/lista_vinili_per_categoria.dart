@@ -47,99 +47,101 @@ class _ListaViniliPerCategoriaState extends State<ListaViniliPerCategoria> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.categoria),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () async {
-              final categoriaProvider = Provider.of<CategoriaProvider>(
-                context,
-                listen: false,
-              );
-
-              final cat = categoriaProvider.categorie.firstWhere(
-                (c) =>
-                    c.nome.trim().toLowerCase() ==
-                    widget.categoria.trim().toLowerCase(),
-                orElse: () => throw Exception('Categoria non trovata'),
-              );
-
-              final conferma = await showDialog<bool>(
-                context: context,
-                builder:
-                    (_) => AlertDialog(
-                      title: const Text('Conferma eliminazione'),
-                      content: const Text('Vuoi eliminare questa categoria?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('Annulla'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('Elimina'),
-                        ),
-                      ],
-                    ),
-              );
-
-              if (conferma == true) {
-                await categoriaProvider.eliminaCategoria(cat.id!);
-                await categoriaProvider.caricaCategorie();
-                await Provider.of<VinileProvider>(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.categoria),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () async {
+                final categoriaProvider = Provider.of<CategoriaProvider>(
                   context,
                   listen: false,
-                ).caricaVinili();
-                Navigator.pop(context);
-              }
-            },
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: vinili.length,
-        itemBuilder: (context, index) {
-          final vinile = vinili[index];
-          return ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(
-                8,
-              ), // stesso raggio per entrambi
-              child:
-                  vinile.copertina != null
-                      ? SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: Image.file(
-                          File(vinile.copertina!),
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                      : Container(
-                        width: 60,
-                        height: 60,
-                        color: Colors.grey[300],
-                        child: const Icon(
-                          Icons.album,
-                          size: 32,
-                          color: Colors.grey,
-                        ),
+                );
+
+                final cat = categoriaProvider.categorie.firstWhere(
+                  (c) =>
+                      c.nome.trim().toLowerCase() ==
+                      widget.categoria.trim().toLowerCase(),
+                  orElse: () => throw Exception('Categoria non trovata'),
+                );
+
+                final conferma = await showDialog<bool>(
+                  context: context,
+                  builder:
+                      (_) => AlertDialog(
+                        title: const Text('Conferma eliminazione'),
+                        content: const Text('Vuoi eliminare questa categoria?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Annulla'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('Elimina'),
+                          ),
+                        ],
                       ),
+                );
+
+                if (conferma == true) {
+                  await categoriaProvider.eliminaCategoria(cat.id!);
+                  await categoriaProvider.caricaCategorie();
+                  await Provider.of<VinileProvider>(
+                    context,
+                    listen: false,
+                  ).caricaVinili();
+                  Navigator.pop(context);
+                }
+              },
             ),
-            title: Text(vinile.titolo),
-            subtitle: Text(vinile.artista),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => DettaglioVinile(vinile: vinile),
-                ),
-              ).then((_) => _aggiornaVinili());
-            },
-          );
-        },
+          ],
+        ),
+        body: ListView.builder(
+          itemCount: vinili.length,
+          itemBuilder: (context, index) {
+            final vinile = vinili[index];
+            return ListTile(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  8,
+                ), // stesso raggio per entrambi
+                child:
+                    vinile.copertina != null
+                        ? SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: Image.file(
+                            File(vinile.copertina!),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                        : Container(
+                          width: 60,
+                          height: 60,
+                          color: Colors.grey[300],
+                          child: const Icon(
+                            Icons.album,
+                            size: 32,
+                            color: Colors.grey,
+                          ),
+                        ),
+              ),
+              title: Text(vinile.titolo),
+              subtitle: Text(vinile.artista),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DettaglioVinile(vinile: vinile),
+                  ),
+                ).then((_) => _aggiornaVinili());
+              },
+            );
+          },
+        ),
       ),
     );
   }

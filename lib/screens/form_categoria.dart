@@ -64,28 +64,32 @@ class _SchermataAggiuntaCategoriaState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Nuova Categoria')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Nome categoria'),
-                validator:
-                    (value) =>
-                        value == null || value.isEmpty
-                            ? 'Inserisci un nome'
-                            : null,
-                onSaved: (value) => _nomeCategoria = value,
-              ),
-              const SizedBox(height: 40),
-              FloatingActionButton.extended(
-                onPressed: _salvaCategoria,
-                icon: const Icon(Icons.save),
-                label: const Text('Salva categoria'),
-              ),
-            ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Nome categoria',
+                  ),
+                  validator:
+                      (value) =>
+                          value == null || value.isEmpty
+                              ? 'Inserisci un nome'
+                              : null,
+                  onSaved: (value) => _nomeCategoria = value,
+                ),
+                const SizedBox(height: 40),
+                FloatingActionButton.extended(
+                  onPressed: _salvaCategoria,
+                  icon: const Icon(Icons.save),
+                  label: const Text('Salva categoria'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -145,248 +145,225 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Copertina
-              GestureDetector(
-                onTap: _scegliImmagine,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        // Centra l'immagine orizzontalmente
-                        Container(
-                          margin: const EdgeInsets.all(10),
-                          width: 150,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.white12,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.white30),
-                          ),
-                          child:
-                              copertina != null
-                                  ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.file(
-                                      copertina!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                  : Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.image_not_supported,
-                                        size: 48,
-                                        color: Colors.white38,
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Nessuna copertina',
-                                        style: TextStyle(color: Colors.white54),
-                                      ),
-                                    ],
-                                  ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Copertina
+                GestureDetector(
+                  onTap: _scegliImmagine,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.white30),
                         ),
-
-                        // Bottone delete in alto a destra rispetto all'immagine
-                        if (copertina != null)
-                          Positioned(
-                            right: -5, // più a destra
-                            top: -5, // più in alto
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: SizedBox(
-                                width: 36,
-                                height: 36,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      copertina = null;
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    padding:
-                                        EdgeInsets
-                                            .zero, // niente spazio interno
-                                    elevation: 2,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                        child:
+                            copertina != null
+                                ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    copertina!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                                : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      Icons.image_not_supported,
+                                      size: 48,
+                                      color: Colors.white38,
                                     ),
-                                  ),
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      'Nessuna copertina',
+                                      style: TextStyle(color: Colors.white54),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ),
+                      ),
+                      if (copertina != null)
+                        TextButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              copertina = null;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.redAccent,
                           ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Titolo
-              TextFormField(
-                initialValue: titolo,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(labelText: 'Titolo'),
-                validator:
-                    (val) =>
-                        val == null || val.isEmpty
-                            ? 'Inserisci un titolo'
-                            : null,
-                onSaved: (val) => titolo = val?.trim(),
-              ),
-
-              // Artista
-              TextFormField(
-                initialValue: artista,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(labelText: 'Artista'),
-                validator:
-                    (val) =>
-                        val == null || val.isEmpty
-                            ? 'Inserisci un artista'
-                            : null,
-                onSaved: (val) => artista = val?.trim(),
-              ),
-
-              // Anno
-              TextFormField(
-                initialValue: anno?.toString(),
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(labelText: 'Anno'),
-                keyboardType: TextInputType.number,
-                validator: (val) {
-                  if (val == null || val.trim().isEmpty) {
-                    return null; // campo opzionale
-                  }
-
-                  final parsed = int.tryParse(val);
-                  final currentYear = DateTime.now().year;
-
-                  if (parsed == null || parsed < 1800 || parsed > currentYear) {
-                    return 'Anno non valido (tra 1800 e $currentYear)';
-                  }
-
-                  return null;
-                },
-                onSaved: (val) => anno = int.tryParse(val ?? ''),
-              ),
-
-              // Etichetta
-              TextFormField(
-                initialValue: etichetta,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(labelText: 'Etichetta'),
-                onSaved: (val) => etichetta = val,
-              ),
-
-              // Categoria
-              ButtonTheme(
-                alignedDropdown: true,
-                child: DropdownButtonFormField<int>(
-                  value:
-                      categoriaId != -1 &&
-                              categorie.any((c) => c.id == categoriaId)
-                          ? categoriaId
-                          : null, // evita errori di valore non presente
-                  items: [
-                    // aggiunge le categorie esistenti, se ce ne sono
-                    ...categorie.map(
-                      (c) => DropdownMenuItem<int>(
-                        value: c.id,
-                        child: Text(c.nome),
-                      ),
-                    ),
-                    // aggiunge sempre l'opzione "aggiungi nuova categoria"
-                    const DropdownMenuItem<int>(
-                      value: -1,
-                      child: Text(
-                        '+ Aggiungi nuova categoria',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
-                  ],
-                  onChanged: (val) async {
-                    if (val == -1) {
-                      final nuovaCategoria = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => const SchermataAggiuntaCategoria(),
+                          label: const Text(
+                            'Elimina copertina',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
                         ),
-                      );
-                      // Dopo il ritorno, aggiorna le categorie (se usi un Provider o simili)
-                      setState(() {
-                        categoriaId =
-                            null; // oppure imposta direttamente la nuova categoria se vuoi
-                      });
-                    } else {
-                      setState(() {
-                        categoriaId = val;
-                      });
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // Titolo
+                TextFormField(
+                  initialValue: titolo,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(labelText: 'Titolo'),
+                  validator:
+                      (val) =>
+                          val == null || val.isEmpty
+                              ? 'Inserisci un titolo'
+                              : null,
+                  onSaved: (val) => titolo = val?.trim(),
+                ),
+
+                // Artista
+                TextFormField(
+                  initialValue: artista,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(labelText: 'Artista'),
+                  validator:
+                      (val) =>
+                          val == null || val.isEmpty
+                              ? 'Inserisci un artista'
+                              : null,
+                  onSaved: (val) => artista = val?.trim(),
+                ),
+
+                // Anno
+                TextFormField(
+                  initialValue: anno?.toString(),
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(labelText: 'Anno'),
+                  keyboardType: TextInputType.number,
+                  validator: (val) {
+                    if (val == null || val.trim().isEmpty) {
+                      return null; // campo opzionale
                     }
+
+                    final parsed = int.tryParse(val);
+                    final currentYear = DateTime.now().year;
+
+                    if (parsed == null ||
+                        parsed < 1800 ||
+                        parsed > currentYear) {
+                      return 'Anno non valido (tra 1800 e $currentYear)';
+                    }
+
+                    return null;
                   },
-                  onSaved: (val) => categoriaId = val,
-                  decoration: const InputDecoration(labelText: 'Categoria'),
-                  dropdownColor: const Color(0xFF001237),
+                  onSaved: (val) => anno = int.tryParse(val ?? ''),
+                ),
+
+                // Etichetta
+                TextFormField(
+                  initialValue: etichetta,
                   style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(labelText: 'Etichetta'),
+                  onSaved: (val) => etichetta = val,
                 ),
-              ),
 
-              // Condizione
-              ButtonTheme(
-                alignedDropdown: true,
-                child: DropdownButtonFormField<String>(
-                  value: condizione,
-                  items:
-                      condizioni
-                          .map(
-                            (c) => DropdownMenuItem(value: c, child: Text(c)),
-                          )
-                          .toList(),
-                  onChanged: (val) => setState(() => condizione = val),
-                  onSaved: (val) => condizione = val,
-                  decoration: const InputDecoration(labelText: 'Condizione'),
-                  dropdownColor: const Color(0xFF001237),
+                // Categoria
+                ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButtonFormField<int>(
+                    value:
+                        categoriaId != -1 &&
+                                categorie.any((c) => c.id == categoriaId)
+                            ? categoriaId
+                            : null, // evita errori di valore non presente
+                    items: [
+                      // aggiunge le categorie esistenti, se ce ne sono
+                      ...categorie.map(
+                        (c) => DropdownMenuItem<int>(
+                          value: c.id,
+                          child: Text(c.nome),
+                        ),
+                      ),
+                      // aggiunge sempre l'opzione "aggiungi nuova categoria"
+                      const DropdownMenuItem<int>(
+                        value: -1,
+                        child: Text(
+                          '+ Aggiungi nuova categoria',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ],
+                    onChanged: (val) async {
+                      if (val == -1) {
+                        final nuovaCategoria = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => const SchermataAggiuntaCategoria(),
+                          ),
+                        );
+                        // Dopo il ritorno, aggiorna le categorie (se usi un Provider o simili)
+                        setState(() {
+                          categoriaId =
+                              null; // oppure imposta direttamente la nuova categoria se vuoi
+                        });
+                      } else {
+                        setState(() {
+                          categoriaId = val;
+                        });
+                      }
+                    },
+                    onSaved: (val) => categoriaId = val,
+                    decoration: const InputDecoration(labelText: 'Categoria'),
+                    dropdownColor: const Color(0xFF001237),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+
+                // Condizione
+                ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButtonFormField<String>(
+                    value: condizione,
+                    items:
+                        condizioni
+                            .map(
+                              (c) => DropdownMenuItem(value: c, child: Text(c)),
+                            )
+                            .toList(),
+                    onChanged: (val) => setState(() => condizione = val),
+                    onSaved: (val) => condizione = val,
+                    decoration: const InputDecoration(labelText: 'Condizione'),
+                    dropdownColor: const Color(0xFF001237),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+
+                // Note
+                TextFormField(
+                  maxLines: 3,
+                  initialValue: note,
+                  decoration: const InputDecoration(
+                    labelText: 'Note',
+                    hintText: 'Aggiungi note...',
+                    border: OutlineInputBorder(),
+                    alignLabelWithHint:
+                        true, // per centrare verticalmente la label
+                  ),
                   style: const TextStyle(color: Colors.white),
+                  onSaved: (val) => note = val,
                 ),
-              ),
 
-              // Note
-              TextFormField(
-                maxLines: 3,
-                initialValue: note,
-                decoration: const InputDecoration(
-                  labelText: 'Note',
-                  hintText: 'Aggiungi note...',
-                  border: OutlineInputBorder(),
-                  alignLabelWithHint:
-                      true, // per centrare verticalmente la label
-                ),
-                style: const TextStyle(color: Colors.white),
-                onSaved: (val) => note = val,
-              ),
-
-              const SizedBox(height: 100),
-            ],
+                const SizedBox(height: 100),
+              ],
+            ),
           ),
         ),
       ),

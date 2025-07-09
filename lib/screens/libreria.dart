@@ -53,18 +53,20 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: <Widget>[
-            ViniliListView(
-              vinili: vinili,
-              messaggio: "Nessun vinile nella libreria",
-            ),
-            _buildTabCategorie(provider),
-            ViniliListView(
-              vinili: viniliPreferiti,
-              messaggio: "Nessun vinile preferito",
-            ),
-          ],
+        body: SafeArea(
+          child: TabBarView(
+            children: <Widget>[
+              ViniliListView(
+                vinili: vinili,
+                messaggio: "Nessun vinile nella libreria",
+              ),
+              _buildTabCategorie(provider),
+              ViniliListView(
+                vinili: viniliPreferiti,
+                messaggio: "Nessun vinile preferito",
+              ),
+            ],
+          ),
         ),
       ),
     );

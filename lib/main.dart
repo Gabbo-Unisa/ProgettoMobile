@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       title: 'VinylVault',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: SafeArea(child: const VistaTabs(title: 'VinylVault')),
+      home: const VistaTabs(title: 'VinylVault'),
     );
   }
 }
