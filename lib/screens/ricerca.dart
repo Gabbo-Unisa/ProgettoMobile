@@ -19,72 +19,118 @@ class _SchermataRicercaState extends State<SchermataRicerca> {
     final ricercaProvider = Provider.of<RicercaProvider>(context);
     final risultati = ricercaProvider.risultati;
     final suggerimenti = ricercaProvider.suggerimenti;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Barra di ricerca
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        hintText: 'Cerca per titolo...',
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                      ),
-                      onChanged: (val) => ricercaProvider.aggiornaRicerca(val),
+    return GestureDetector(
+      onTap:
+          () =>
+              FocusScope.of(context).unfocus(), // chiude la tastiera sul click
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // barra di ricerca
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Suggerimenti ricerca
-            if (ricercaProvider.suggerimenti.isNotEmpty)
-              Flexible(
-                child: Container(
-                  constraints: const BoxConstraints(
-                    maxHeight: 200,
-                  ), // altezza max
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: ricercaProvider.suggerimenti.length,
-                    itemBuilder: (context, index) {
-                      final suggerimento = ricercaProvider.suggerimenti[index];
-                      return ListTile(
-                        title: Text(suggerimento),
-                        onTap: () {
-                          _controller.text = suggerimento;
-                          ricercaProvider.applicaSuggerimento(suggerimento);
-                        },
-                      );
-                    },
-                  ),
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        autofocus: true,
+                        textInputAction: TextInputAction.search,
+                        decoration: const InputDecoration(
+                          hintText: 'Cerca per titolo...',
+                          border: OutlineInputBorder(),
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                        ),
+                        onChanged:
+                            (val) => ricercaProvider.aggiornaRicerca(val),
+                        onSubmitted:
+                            (val) => ricercaProvider.aggiornaRicerca(val),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
-            const Divider(height: 1, thickness: 1),
+              const SizedBox(height: 8),
 
-            // Lista vinili scrollabile e adattabile
-            Expanded(
-              child: ViniliListView(
-                vinili: risultati,
-                messaggio: 'Nessun vinile trovato.',
+              // suggerimenti
+              if (suggerimenti.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child:
+                      isLandscape // Responsive
+                          // Schermo in orizzontale
+                          ? Wrap(
+                            spacing: 8,
+                            runSpacing: 4,
+                            children:
+                                suggerimenti.map((s) {
+                                  return ActionChip(
+                                    label: Text(s),
+                                    onPressed: () {
+                                      _controller.text = s;
+                                      ricercaProvider.applicaSuggerimento(s);
+                                      FocusScope.of(context).unfocus();
+                                    },
+                                    backgroundColor: Colors.blueGrey.shade800,
+                                    labelStyle: const TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                }).toList(),
+                          )
+                          // Schermo in verticale
+                          : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                                suggerimenti.map((s) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                    ),
+                                    child: ActionChip(
+                                      label: Text(s),
+                                      onPressed: () {
+                                        _controller.text = s;
+                                        ricercaProvider.applicaSuggerimento(s);
+                                        FocusScope.of(context).unfocus();
+                                      },
+                                      backgroundColor: Colors.blueGrey.shade800,
+                                      labelStyle: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                          ),
+                ),
+
+              const Divider(height: 20, thickness: 1),
+
+              // risultati ricerca
+              Expanded(
+                child: ViniliListView(
+                  vinili: risultati,
+                  messaggio: 'Nessun vinile trovato.',
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
