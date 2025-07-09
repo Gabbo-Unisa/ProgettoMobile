@@ -90,7 +90,7 @@ class _VistaTabsState extends State<VistaTabs> {
     return Scaffold(
       appBar:
           // AppBar visibile solo in "Home" e "Libreria"
-          _selectedIndex == 2
+          _selectedIndex == 3
               ? null
               : AppBar(
                 title: Row(
