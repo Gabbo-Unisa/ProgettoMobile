@@ -20,8 +20,7 @@ class ListaViniliPerCategoria extends StatefulWidget {
   });
 
   @override
-  State<ListaViniliPerCategoria> createState() =>
-      _ListaViniliPerCategoriaState();
+  State<ListaViniliPerCategoria> createState() => _ListaViniliPerCategoriaState();
 }
 
 class _ListaViniliPerCategoriaState extends State<ListaViniliPerCategoria> {
@@ -105,9 +104,7 @@ class _ListaViniliPerCategoriaState extends State<ListaViniliPerCategoria> {
             final vinile = vinili[index];
             return ListTile(
               leading: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  8,
-                ), // stesso raggio per entrambi
+                borderRadius: BorderRadius.circular(8), // stesso raggio per entrambi
                 child:
                     vinile.copertina != null
                         ? SizedBox(

@@ -51,12 +51,7 @@ class ViniliListView extends StatelessWidget {
           title: Text(vinile.titolo),
           subtitle: Text(vinile.artista),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => DettaglioVinile(vinile: vinile),
-              ),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (_) => DettaglioVinile(vinile: vinile)));
           },
         );
       },

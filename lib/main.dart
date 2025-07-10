@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import 'db/database_helper.dart';
+//import 'db/database_helper.dart';
 import 'providers/vinile_provider.dart';
 import 'providers/categoria_provider.dart';
 import 'providers/ricerca_provider.dart';
@@ -86,10 +86,7 @@ class _VistaTabsState extends State<VistaTabs> {
   static final List<BottomNavigationBarItem> _navItems = [
     BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
     BottomNavigationBarItem(icon: Icon(MdiIcons.bookshelf), label: 'Libreria'),
-    BottomNavigationBarItem(
-      icon: Icon(MdiIcons.chartArc),
-      label: 'Statistiche',
-    ),
+    BottomNavigationBarItem(icon: Icon(MdiIcons.chartArc), label: 'Statistiche')
   ];
 
   @override
@@ -97,9 +94,7 @@ class _VistaTabsState extends State<VistaTabs> {
     return Scaffold(
       appBar:
           // AppBar visibile solo in "Home" e "Libreria"
-          _selectedIndex == 2
-              ? null
-              : AppBar(
+          _selectedIndex == 2 ? null : AppBar(
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -120,8 +115,7 @@ class _VistaTabsState extends State<VistaTabs> {
                     tooltip: 'Ricerca',
                     onPressed: () {
                       // Recupero tutti i vinili
-                      final vinili =
-                          Provider.of<VinileProvider>(
+                      final vinili = Provider.of<VinileProvider>(
                             context,
                             listen: false,
                           ).vinili;
@@ -131,18 +125,16 @@ class _VistaTabsState extends State<VistaTabs> {
                         listen: false,
                       ).impostaVinili(vinili);
                       // Vai alla schermata di ricerca
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const SchermataRicerca(),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const SchermataRicerca()));
                     },
                   ),
                 ],
               ),
 
-      body: IndexedStack(index: _selectedIndex, children: _screens),
+      body: IndexedStack(
+          index: _selectedIndex,
+          children: _screens
+      ),
 
       bottomNavigationBar: BottomNavigationBar(
         items: _navItems,
@@ -151,16 +143,10 @@ class _VistaTabsState extends State<VistaTabs> {
       ),
 
       floatingActionButton:
-          _selectedIndex == 2
-              ? null
-              : FloatingActionButton(
+          // floatingActionButton visibile solo in "Home" e "Libreria"
+          _selectedIndex == 2 ? null : FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SchermataAggiuntaVinile(),
-                    ),
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SchermataAggiuntaVinile()));
                 },
                 backgroundColor: Color(0xFF001237),
                 foregroundColor: Colors.white,

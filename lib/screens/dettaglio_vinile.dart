@@ -29,11 +29,7 @@ class DettaglioVinile extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (_) => SchermataAggiuntaVinile(
+              await Navigator.push(context, MaterialPageRoute(builder: (_) => SchermataAggiuntaVinile(
                         vinile: vinile,
                         isEditing: true,
                       ),
@@ -64,14 +60,14 @@ class DettaglioVinile extends StatelessWidget {
                           onPressed: () => Navigator.pop(context, false),
                           child: const Text(
                             'Annulla',
-                            style: TextStyle(color: Colors.lightBlue),
+                            style: TextStyle(color: Colors.deepPurple),
                           ),
                         ),
                         TextButton(
                           onPressed: () => Navigator.pop(context, true),
                           child: const Text(
                             'Elimina',
-                            style: TextStyle(color: Colors.lightBlue),
+                            style: TextStyle(color: Colors.deepPurple),
                           ),
                         ),
                       ],
@@ -138,9 +134,7 @@ class DettaglioVinile extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      right:
-                          MediaQuery.of(context).size.width / 2 -
-                          104, // allineata appena fuori la copertina
+                      right: MediaQuery.of(context).size.width / 2 - 104, // allineata appena fuori la copertina
                       top: -1.5,
                       child: Transform.rotate(
                         angle: 0.3,
@@ -158,89 +152,52 @@ class DettaglioVinile extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 // Artista
-                Text(
-                  'Artista:',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  vinile.artista,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                Text('Artista:', style: Theme.of(context).textTheme.labelMedium),
+                Text(vinile.artista, style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 12),
 
                 // Anno (opzionale)
                 if (vinile.anno != null) ...[
                   Text('Anno:', style: Theme.of(context).textTheme.labelMedium),
-                  Text(
-                    '${vinile.anno}',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  Text('${vinile.anno}', style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 12),
                 ],
 
                 // Categoria (opzionale)
                 if (vinile.categoriaId != null) ...[
-                  Text(
-                    'Categoria:',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Text(
-                    categoria.nome,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  Text('Categoria:', style: Theme.of(context).textTheme.labelMedium),
+                  Text(categoria.nome, style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 12),
                 ],
 
                 // Etichetta (opzionale)
                 if (vinile.etichetta != null &&
                     vinile.etichetta!.trim().isNotEmpty) ...[
-                  Text(
-                    'Etichetta:',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Text(
-                    vinile.etichetta!,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  Text('Etichetta:', style: Theme.of(context).textTheme.labelMedium),
+                  Text(vinile.etichetta!, style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 12),
                 ],
 
                 // Condizione (opzionale)
                 if (vinile.condizione != null &&
                     vinile.condizione!.trim().isNotEmpty) ...[
-                  Text(
-                    'Condizione:',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Text(
-                    vinile.condizione!,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  Text('Condizione:', style: Theme.of(context).textTheme.labelMedium),
+                  Text(vinile.condizione!, style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 12),
                 ],
 
                 // Note (opzionale)
                 if (vinile.note != null && vinile.note!.trim().isNotEmpty) ...[
                   Text('Note:', style: Theme.of(context).textTheme.labelMedium),
-                  Text(
-                    vinile.note!,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                  ),
+                  Text(vinile.note!, style: Theme.of(context).textTheme.bodyLarge, textAlign: TextAlign.center),
                   const SizedBox(height: 12),
                 ],
 
                 // Data di aggiunta (opzionale)
                 if (vinile.dataAggiunta != null &&
                     vinile.dataAggiunta!.trim().isNotEmpty) ...[
-                  Text(
-                    'Aggiunto il:',
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Text(
-                    vinile.dataAggiunta!,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  Text('Aggiunto il:', style: Theme.of(context).textTheme.labelMedium),
+                  Text(vinile.dataAggiunta!, style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 12),
                 ],
               ],

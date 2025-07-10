@@ -83,14 +83,7 @@ class SchermataPrincipale extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) =>
-                                          const SchermataAggiuntaVinile(),
-                                ),
-                              );
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const SchermataAggiuntaVinile()));
                             },
                             child: const Text(
                               'Aggiungi un nuovo vinile',
@@ -181,12 +174,7 @@ class SchermataPrincipale extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => DettaglioVinile(vinile: vinile),
-                ),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (_) => DettaglioVinile(vinile: vinile)));
             },
             child: Container(
               width: 120,

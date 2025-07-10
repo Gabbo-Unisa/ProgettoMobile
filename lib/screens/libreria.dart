@@ -81,9 +81,7 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
     }
 
     return ListView.separated(
-      itemCount:
-          categorie.length +
-          2, // 1 per "Senza categoria", 1 per "Aggiungi categoria"
+      itemCount: categorie.length + 2, // 1 per "Senza categoria", 1 per "Aggiungi categoria"
       itemBuilder: (context, index) {
         final countNull =
             provider.vinili.where((v) => v.categoriaId == null).length;
@@ -121,7 +119,7 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
                 fontStyle: FontStyle.italic,
               ),
             ),
-            leading: const Icon(Icons.add, color: Colors.lightBlue),
+            leading: const Icon(Icons.add, color: Colors.deepPurple),
             onTap: () {
               Navigator.push(
                 context,
@@ -140,20 +138,14 @@ class _SchermataLibreriaState extends State<SchermataLibreria> {
         }
 
         // Categoria normale
-        final cat =
-            categorie[index - 1]; // -1 perché il primo è "Senza categoria"
-        final count =
-            provider.vinili.where((v) => v.categoriaId == cat.id).length;
+        final cat = categorie[index - 1]; // -1 perché il primo è "Senza categoria"
+        final count = provider.vinili.where((v) => v.categoriaId == cat.id).length;
 
         return ListTile(
           title: Text(cat.nome),
           trailing: Text('$count'),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => ListaViniliPerCategoria(
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ListaViniliPerCategoria(
                       categoria: cat.nome,
                       vinili:
                           provider.vinili
