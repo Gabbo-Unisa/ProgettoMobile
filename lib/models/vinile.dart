@@ -65,6 +65,6 @@ class Vinile {
   String toString() {
     return 'Vinile(id: $id, titolo: $titolo, artista: $artista, anno: $anno, '
         'etichetta: $etichetta, condizione: $condizione, copertina: $copertina, '
-        'preferito: $preferito, note: $note, categoriaId: $categoriaId), dataAggiunta: $dataAggiunta)';
+        'preferito: $preferito, note: $note, categoriaId: $categoriaId, dataAggiunta: $dataAggiunta)';
   }
 }

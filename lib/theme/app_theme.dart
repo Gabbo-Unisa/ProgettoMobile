@@ -42,7 +42,7 @@ class AppTheme {
     inputDecorationTheme: const InputDecorationTheme(
       labelStyle: TextStyle(color: Colors.white60),
       focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.lightBlueAccent),
+        borderSide: BorderSide(color: Colors.deepPurple),
       ),
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.white30),
@@ -50,14 +50,14 @@ class AppTheme {
     ),
 
     textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Colors.lightBlueAccent,
-      selectionHandleColor: Colors.lightBlueAccent,
+      cursorColor: Colors.deepPurple,
+      selectionHandleColor: Colors.deepPurple,
     ),
 
     switchTheme: SwitchThemeData(
       thumbColor: MaterialStateProperty.resolveWith<Color>((states) {
         return states.contains(MaterialState.selected)
-            ? Colors.lightBlueAccent
+            ? Colors.deepPurple
             : Colors.white24;
       }),
       trackColor: MaterialStateProperty.resolveWith<Color>((states) {

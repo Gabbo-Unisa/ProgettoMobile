@@ -12,8 +12,7 @@ class SchermataAggiuntaCategoria extends StatefulWidget {
       _SchermataAggiuntaCategoriaState();
 }
 
-class _SchermataAggiuntaCategoriaState
-    extends State<SchermataAggiuntaCategoria> {
+class _SchermataAggiuntaCategoriaState extends State<SchermataAggiuntaCategoria> {
   final _formKey = GlobalKey<FormState>();
   String? _nomeCategoria;
 
@@ -21,14 +20,10 @@ class _SchermataAggiuntaCategoriaState
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final categoriaProvider = Provider.of<CategoriaProvider>(
-        context,
-        listen: false,
-      );
+      final categoriaProvider = Provider.of<CategoriaProvider>(context, listen: false);
 
       // Normalizza il nome: rimuove spazi extra, mette in minuscolo
-      final nomeNorm =
-          _nomeCategoria!.trim().replaceAll(RegExp(r'\s+'), ' ').toLowerCase();
+      final nomeNorm = _nomeCategoria!.trim().replaceAll(RegExp(r'\s+'), ' ').toLowerCase();
 
       // Il nome finale avrà la prima lettera maiuscola di ogni parola
       final nomeFinale = nomeNorm
