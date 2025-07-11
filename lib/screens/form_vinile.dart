@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 import 'form_categoria.dart';
 
@@ -62,11 +64,35 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
 
   Future<void> _scegliImmagine() async {
     final picked = await picker.pickImage(source: ImageSource.gallery);
+
     if (picked != null) {
+      // 1. Ottieni directory persistente
+      final appDir = await getApplicationDocumentsDirectory();
+
+      // 2. Crea un nome unico per evitare conflitti
+      final nomeFile =
+          '${DateTime.now().millisecondsSinceEpoch}_${path.basename(picked.path)}';
+
+      // 3. Costruisci nuovo path persistente
+      final savedImage = await File(
+        picked.path,
+      ).copy('${appDir.path}/$nomeFile');
+
+      // 4. Salva il file persistente nello stato
       setState(() {
-        copertina = File(picked.path);
+        copertina = savedImage;
       });
     }
+  }
+
+  void _rimuoviCopertina() async {
+    if (copertina != null && await copertina!.exists()) {
+      await copertina!.delete(); // elimina il file dal filesystem
+    }
+
+    setState(() {
+      copertina = null;
+    });
   }
 
   void _salvaVinile() async {
@@ -196,9 +222,7 @@ class _SchermataFormState extends State<SchermataAggiuntaVinile> {
                       if (copertina != null)
                         TextButton.icon(
                           onPressed: () {
-                            setState(() {
-                              copertina = null;
-                            });
+                            _rimuoviCopertina();
                           },
                           icon: const Icon(
                             Icons.delete_outline,
